@@ -1,0 +1,1 @@
+include ':core', ':util', ':app', ':toolbar', ':ui', ':picker', ':fonts', ':base', ':cardview', ':legacy', ':toolbar-tabs', ':pager', ':alerts'

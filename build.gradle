@@ -1,0 +1,43 @@
+apply plugin: 'com.github.ben-manes.versions'
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+ext {
+    groupID = 'com.papyrus'
+    versionName = "1.0.0"
+    versionCode = 1
+
+    minSdkVersion = 16
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.3"
+
+    //LibraryVersions
+    Support = "27+"
+    JUnit = "4.12"
+    TestRunner = "1.0.1"
+    Espresso = "3.0.1"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

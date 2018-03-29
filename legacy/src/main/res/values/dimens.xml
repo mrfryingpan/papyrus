@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="nav_header_height">480dp</dimen>
+    <dimen name="drawer_width">240dp</dimen>
+    <dimen name="sheet_height">200dp</dimen>
+    <dimen name="content_toolbar_margin_bottom">20dp</dimen>
+</resources>

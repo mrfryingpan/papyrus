@@ -1,0 +1,3 @@
+<resources>
+    <attr name='content_layout' format="reference" />
+</resources>

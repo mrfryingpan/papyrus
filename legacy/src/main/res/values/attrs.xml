@@ -1,0 +1,35 @@
+<resources>
+    <attr name="papyrus_font" format="string" />
+
+    <declare-styleable name="PapyrusTextView">
+        <attr name="papyrus_font" />
+        <attr name="compatClickedDrawable" format="integer" />
+        <attr name="compatDefaultDrawable" format="integer" />
+        <attr name="compatDisabledDrawable" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="PapyrusEditText">
+        <attr name="papyrus_font" />
+    </declare-styleable>
+
+    <declare-styleable name="PapyrusNavigationView">
+        <attr name="item_font" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="PapyrusOptionSheet">
+        <attr name="option_layout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ExposedPager">
+        <attr name="content_width" format="dimension" />
+        <attr name="content_height" format="dimension" />
+        <attr name="offscreen_limit" format="integer" />
+        <attr name="page_margin" format="dimension" />
+        <attr name="align_left" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_color" format="color" />
+        <attr name="border_width" format="dimension" />
+    </declare-styleable>
+</resources>

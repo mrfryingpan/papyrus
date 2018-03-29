@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+
+ext {
+    PUBLISH_GROUP_ID = rootProject.ext.groupID
+    PUBLISH_VERSION = rootProject.ext.versionName
+    PUBLISH_ARTIFACT_ID = 'papyrus-core'
+    PUBLISH_DESC = 'Context-Aware Navigation and Permissions'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.Support}"
+
+
+    testImplementation "junit:junit:${rootProject.ext.JUnit}"
+    androidTestImplementation "com.android.support.test:runner:${rootProject.ext.TestRunner}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.Espresso}"
+    api project(':util')
+}
+
+apply from: rootProject.file('deploy.gradle')
+

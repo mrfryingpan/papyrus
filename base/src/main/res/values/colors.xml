@@ -1,0 +1,7 @@
+<resources>
+    <color name="black_overlay">#33000000</color>
+    <color name="shadow">#5000</color>
+    <color name="black_filter">#A000</color>
+
+    <color name="dark_rounded_rect_background">#333333</color>
+</resources>
