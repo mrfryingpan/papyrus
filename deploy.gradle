@@ -57,7 +57,7 @@ publishing {
             pom.withXml {
                 def dependencies = asNode().appendNode('dependencies')
                 configurations.implementation.allDependencies.each {
-                    if (it.group == 'Papyrus2-Library') {
+                    if (it.group == 'repo') {
                         def dependency = dependencies.appendNode('dependency')
                         dependency.appendNode('groupId', project.PUBLISH_GROUP_ID)
                         dependency.appendNode('artifactId', "papyrus-${it.name}")
