@@ -41,7 +41,7 @@ public class DateDelta {
         }
         if (delta.hours < 0) {
             delta.days--;
-            delta.hours += from.getActualMaximum(Calendar.HOUR);
+            delta.hours += from.getActualMaximum(Calendar.HOUR_OF_DAY);
         }
         if (delta.days < 0) {
             delta.months--;
