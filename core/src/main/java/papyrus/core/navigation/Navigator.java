@@ -63,6 +63,11 @@ public class Navigator {
         return this;
     }
 
+    public Navigator putBoolean(String key, boolean value){
+        extras.putBoolean(key, value);
+        return this;
+    }
+
     public Navigator putByte(String key, byte value) {
         extras.putByte(key, value);
         return this;
