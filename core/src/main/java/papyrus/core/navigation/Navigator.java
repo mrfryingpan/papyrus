@@ -166,6 +166,11 @@ public class Navigator {
         return this;
     }
 
+    public Navigator forwardResult(){
+        flags.add(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        return this;
+    }
+
     public Navigator onResult(final IResultCallback resultCallback) {
         this.resultCallback = resultCallback;
         return this;
