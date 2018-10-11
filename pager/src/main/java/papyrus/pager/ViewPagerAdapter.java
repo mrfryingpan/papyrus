@@ -39,20 +39,20 @@ public abstract class ViewPagerAdapter<VH extends ViewPagerAdapter.ViewHolder> e
 
         holder.adapterPosition = position;
         onBindViewHolder(holder, position);
-        container.addView(holder.view);
+        container.addView(holder.itemView);
         return holder;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         onViewRecycled((VH) object);
-        container.removeView(((VH) object).view);
+        container.removeView(((VH) object).itemView);
         stashViewHolderForReuse((VH) object);
     }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return ((VH) object).view == view;
+        return ((VH) object).itemView == view;
     }
 
     public abstract VH onCreateViewHolder(ViewGroup parent, int viewType);
