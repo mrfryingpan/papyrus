@@ -67,12 +67,12 @@ public abstract class ViewPagerAdapter<VH extends ViewPagerAdapter.ViewHolder> e
     }
 
     public static abstract class ViewHolder {
-        View view;
+        protected View itemView;
         int viewType = 1;
         int adapterPosition;
 
         public ViewHolder(View view) {
-            this.view = view;
+            this.itemView = view;
         }
 
         public int getAdapterPosition() {
