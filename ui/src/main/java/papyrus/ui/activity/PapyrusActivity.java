@@ -177,7 +177,6 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
 
     public void setContent(Fragment fragment, int... animations) {
         reset();
-        mCurrentFragment = fragment;
         mContainer.removeAllViews();
         try {
             clearBackstack();
@@ -195,6 +194,7 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
             if (fragment instanceof PapyrusFragment) {
                 ((PapyrusFragment) fragment).visibilityChanged(true);
             }
+            mCurrentFragment = fragment;
             onContentUpdated();
         } catch (IllegalStateException e) {
             needsFragmentAdd = true;
