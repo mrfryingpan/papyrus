@@ -2,11 +2,11 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
@@ -15,20 +15,20 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 }
 
 ext {
     groupID = 'com.papyrus'
-    versionName = "1.0.4"
+    versionName = "1.0.5"
     versionCode = 4
 
     minSdkVersion = 16
     targetSdkVersion = 27
     compileSdkVersion = 27
-    buildToolsVersion = "27.0.3"
+    buildToolsVersion = "28.0.3"
 
     //LibraryVersions
     Support = "27+"
