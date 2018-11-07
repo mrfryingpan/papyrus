@@ -22,16 +22,16 @@ allprojects {
 
 ext {
     groupID = 'com.papyrus'
-    versionName = "1.0.5"
-    versionCode = 4
+    versionName = "1.1.0"
+    versionCode = 5
 
     minSdkVersion = 16
-    targetSdkVersion = 27
-    compileSdkVersion = 27
+    targetSdkVersion = 28
+    compileSdkVersion = 28
     buildToolsVersion = "28.0.3"
 
     //LibraryVersions
-    Support = "27+"
+    Support = "28+"
     JUnit = "4.12"
     TestRunner = "1.0.1"
     Espresso = "3.0.1"
