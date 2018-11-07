@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.Support}"
 
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
