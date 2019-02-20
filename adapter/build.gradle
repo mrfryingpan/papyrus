@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 ext {
     PUBLISH_GROUP_ID = rootProject.ext.groupID
@@ -29,6 +31,8 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     compileOnly "com.android.support:appcompat-v7:${rootProject.ext.Support}"
     compileOnly "com.android.support:recyclerview-v7:${rootProject.ext.Support}"
 
