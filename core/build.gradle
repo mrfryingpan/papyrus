@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 ext {
     PUBLISH_GROUP_ID = rootProject.ext.groupID
@@ -29,8 +31,9 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.Support}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    compileOnly "com.android.support:appcompat-v7:${rootProject.ext.Support}"
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
     androidTestImplementation "com.android.support.test:runner:${rootProject.ext.TestRunner}"
