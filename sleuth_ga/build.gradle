@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 ext {
     PUBLISH_GROUP_ID = rootProject.ext.groupID
@@ -32,15 +32,14 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.Support}"
-
+    compileOnly "com.google.android.gms:play-services-analytics:17.+"
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
     androidTestImplementation "com.android.support.test:runner:${rootProject.ext.TestRunner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.Espresso}"
     api project(":base")
     api project(":util")
+    api project(":sleuth")
 }
 
 
