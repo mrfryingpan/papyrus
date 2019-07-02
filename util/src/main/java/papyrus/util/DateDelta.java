@@ -33,11 +33,11 @@ public class DateDelta {
 
         if (delta.seconds < 0) {
             delta.minutes--;
-            delta.seconds += from.getActualMaximum(Calendar.SECOND);
+            delta.seconds += from.getActualMaximum(Calendar.SECOND)+1;
         }
         if (delta.minutes < 0) {
             delta.hours--;
-            delta.minutes += from.getActualMaximum(Calendar.MINUTE);
+            delta.minutes += from.getActualMaximum(Calendar.MINUTE)+1;
         }
         if (delta.hours < 0) {
             delta.days--;

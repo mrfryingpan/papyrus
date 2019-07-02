@@ -6,6 +6,8 @@ import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.text.style.TypefaceSpan;
 
+import org.jetbrains.annotations.NotNull;
+
 public class PapyrusTypefaceSpan extends TypefaceSpan {
 
     private final Typeface newType;
@@ -16,12 +18,12 @@ public class PapyrusTypefaceSpan extends TypefaceSpan {
     }
 
     @Override
-    public void updateDrawState(TextPaint ds) {
+    public void updateDrawState(@NotNull TextPaint ds) {
         applyCustomTypeFace(ds, newType);
     }
 
     @Override
-    public void updateMeasureState(TextPaint paint) {
+    public void updateMeasureState(@NotNull TextPaint paint) {
         applyCustomTypeFace(paint, newType);
     }
 
