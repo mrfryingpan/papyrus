@@ -122,7 +122,7 @@ public class Papyrus {
             }
         }
 
-        return WeakDelegate.dummy(Navigator.class);
+        return WeakDelegate.Companion.dummy(Navigator.class);
     }
 
     public static void finishCurrentActivity() {
@@ -163,9 +163,9 @@ public class Papyrus {
                                         String[] permissions = data.getStringArrayExtra("permissions");
                                         int[] grantResults = data.getIntArrayExtra("grantResults");
                                         PermissionRequest request = instance.permissionRequesters.get(inx);
-                                        IPermissionRequester requester = request.requester;
+                                        IPermissionRequester requester = request.getRequester();
 
-                                        List<String> grantedPermissions = request.alreadyGranted;
+                                        List<String> grantedPermissions = request.getAlreadyGranted();
                                         List<String> deniedPermissions = new ArrayList<>();
 
                                         for (int i = 0; i < permissions.length; i++) {
