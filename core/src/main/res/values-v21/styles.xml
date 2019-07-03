@@ -1,6 +1,4 @@
 <resources>
-    <style name="PapyrusTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
-
     <style name="PapyrusTheme.Translucent">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>

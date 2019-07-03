@@ -1,6 +1,7 @@
 package papyrus.ui.activity;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,8 +27,15 @@ public class PapyrusToolbarActivity extends PapyrusActivity {
         return R.layout.papyrus_toolbar;
     }
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     protected void onContentWrapperInflated() {
+        super.onContentWrapperInflated();
         mToolbar = findViewById(R.id.toolbar);
         mOverflowWrapper = findViewById(R.id.toolbar_overflow_wrapper);
         mOverflow = findViewById(R.id.toolbar_overflow);

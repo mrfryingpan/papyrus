@@ -13,13 +13,14 @@ import java.util.List;
 import papyrus.core.Papyrus;
 import papyrus.core.iface.IPermissionRequester;
 import papyrus.core.iface.IResultCallback;
+import papyrus.ui.activity.PapyrusToolbarActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends PapyrusToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContent(R.layout.activity_main);
 
         Analytics.INSTANCE.getTracker().aboutScreenView();
 
