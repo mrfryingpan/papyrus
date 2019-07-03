@@ -45,7 +45,7 @@ dependencies {
     api project(':fonts')
     api project(':ui')
     api project(':toolbar')
-    api project(':toolbar_tabs')
+    api project(':toolbar-tabs')
     api project(':alerts')
     api project(':util')
     api project(':pager')

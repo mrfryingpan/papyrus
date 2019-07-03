@@ -43,7 +43,7 @@ dependencies {
 
     api project(':util')
     api project(':pager')
-    api project(':toolbar_tabs')
+    api project(':toolbar-tabs')
     api project(':core')
     api project(':base')
     api project(':alerts')
