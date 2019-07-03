@@ -24,7 +24,7 @@
 
         <include layout="@layout/toolbar_base" />
 
-        <com.papyrus.ui.toolbar.tabs.SlidingTabLayout
+        <papyrus.toolbar.tabs.SlidingTabLayout
             android:id="@+id/toolbar_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

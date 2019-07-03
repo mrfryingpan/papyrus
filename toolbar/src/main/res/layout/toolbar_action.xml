@@ -9,7 +9,7 @@
         android:layout_centerInParent="true"
         android:padding="12dp" />
 
-    <com.papyrus.ui.view.PapyrusTextView
+    <papyrus.fonts.PapyrusTextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
