@@ -28,7 +28,7 @@ public class Navigator {
     Context context;
     Set<Integer> flags = new HashSet<>();
     Bundle extras = new Bundle();
-    Customizer customizer = WeakDelegate.dummy(Customizer.class);
+    Customizer customizer = WeakDelegate.Companion.dummy(Customizer.class);
     String action;
     Uri data;
     IResultCallback resultCallback;

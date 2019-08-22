@@ -3,6 +3,7 @@ package papyrus.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -61,6 +62,7 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
         });
     }
 
+    @CallSuper
     protected void onContentWrapperInflated() {
         mContainer = findViewById(R.id.content_container);
         mLoading = findViewById(R.id.loading_view);

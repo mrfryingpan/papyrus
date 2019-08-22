@@ -38,4 +38,7 @@ dependencies {
     api project(':picker')
     api project(':sleuth')
     api project(':sleuth_ga')
+    api project(path: ':ui')
+    api project(path: ':toolbar')
+    api project(path: ':toolbar-tabs')
 }
