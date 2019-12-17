@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    compileOnly "androidx.appcompat:appcompat:${rootProject.ext.AppCompat}"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.AppCompat}"
 
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"

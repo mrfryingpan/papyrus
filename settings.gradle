@@ -1,1 +1,1 @@
-include ':core', ':util', ':app', ':toolbar', ':ui', ':picker', ':fonts', ':base', ':legacy', ':toolbar-tabs', ':pager', ':alerts', ':adapter', ':sleuth', ':sleuth_ga', ':spanner'
+include ':core', ':util', ':app', ':toolbar', ':ui', ':picker', ':fonts', ':base', ':toolbar-tabs', ':pager', ':alerts', ':adapter', ':sleuth', ':sleuth_ga', ':spanner'

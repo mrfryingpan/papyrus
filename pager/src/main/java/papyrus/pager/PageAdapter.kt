@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference
 import papyrus.pager.iface.IPageCreator
 import papyrus.pager.iface.IPageStateCallback
 
-open class PageAdapter(fm: FragmentManager, protected var creator: IPageCreator, initialPosition: Int = creator.defaultPage) : FragmentStatePagerAdapter(fm), ViewPager.OnPageChangeListener {
+open class PageAdapter(fm: FragmentManager, protected var creator: IPageCreator, initialPosition: Int = creator.defaultPage) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT), ViewPager.OnPageChangeListener {
     protected var fragments = SparseArray<WeakReference<Fragment>>()
 
     var currentPosition: Int = initialPosition

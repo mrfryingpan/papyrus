@@ -59,9 +59,9 @@ abstract class ViewPagerAdapter<VH : ViewPagerAdapter.ViewHolder> : PagerAdapter
 
     abstract fun onBindViewHolder(holder: VH, position: Int)
 
-    fun onViewRecycled(holder: VH) {}
+    open fun onViewRecycled(holder: VH) {}
 
-    fun getItemViewType(position: Int): Int {
+    open fun getItemViewType(position: Int): Int {
         return 1
     }
 
