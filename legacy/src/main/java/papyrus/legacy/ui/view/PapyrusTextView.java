@@ -55,7 +55,7 @@ public class PapyrusTextView extends papyrus.fonts.PapyrusTextView {
     }
 
     public void setFont(String font) {
-        setTypeface(TypefaceLoader.getTypeface(font, getContext()));
+        setTypeface(TypefaceLoader.Companion.getTypeface(font, getContext()));
     }
 
     @Override

@@ -18,7 +18,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -33,11 +33,11 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.Support}"
+    compileOnly "androidx.appcompat:appcompat:${rootProject.ext.AppCompat}"
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
-    androidTestImplementation "com.android.support.test:runner:${rootProject.ext.TestRunner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.Espresso}"
+    androidTestImplementation "androidx.test:runner:${rootProject.ext.TestRunner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.Espresso}"
     api project(':util')
 }
 

@@ -3,13 +3,19 @@ package papyrus.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,7 +23,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import papyrus.alerts.DialogCallbacks;
-import papyrus.alerts.PapyrusAlertActivity;
 import papyrus.core.Papyrus;
 import papyrus.core.iface.IPermissionRequester;
 import papyrus.core.iface.IResultCallback;
@@ -48,12 +53,12 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.papyrus_core);
         LayoutInflater.from(this).inflate(getLayoutID(), (FrameLayout) findViewById(R.id.content), true);
         onContentWrapperInflated();
-        getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
                 mCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.content_container);
@@ -140,28 +145,28 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
     }
 
     public static void addContentToActiveBackstack(PapyrusFragment fragment, int... animations) {
-        Papyrus.addFragmentToActiveBackstack(fragment, R.id.content_container, null, animations);
+        Papyrus.Companion.addFragmentToActiveBackstack(fragment, R.id.content_container, null, animations);
     }
 
     public void addContentToBackstack(PapyrusFragment fragment, String name, int... animations) {
-        Papyrus.addFragmentToBackstack(this, fragment, R.id.content_container, name, animations);
+        Papyrus.Companion.addFragmentToBackstack(this, fragment, R.id.content_container, name, animations);
     }
 
     public static void addContentToActiveBackstack(PapyrusFragment fragment, String name, int... animations) {
-        Papyrus.addFragmentToActiveBackstack(fragment, R.id.content_container, name, animations);
+        Papyrus.Companion.addFragmentToActiveBackstack(fragment, R.id.content_container, name, animations);
     }
 
     public static boolean popBackstackTo(String name) {
-        return Papyrus.popBackstackTo(name);
+        return Papyrus.Companion.popBackstackTo(name);
     }
 
     public static boolean popBackstackIncluding(String name) {
-        Papyrus.popBackstackIncluding(name);
+        Papyrus.Companion.popBackstackIncluding(name);
         return false;
     }
 
     public void clearBackstack() {
-        Papyrus.clearBackstack(this);
+        Papyrus.Companion.clearBackstack(this);
     }
 
     protected boolean hasBackstack() {
@@ -241,92 +246,26 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
     /*
      * Activity Result Processing
      */
-    public synchronized void startActivityForResult(Intent intent, IResultCallback callback) {
-        Papyrus.navigate()
-                .onResult(callback)
-                .startActivity(intent);
-    }
-
-    public void startActivityForResult(Class<? extends Activity> destination, Bundle extras, IResultCallback callback) {
-        Papyrus.navigate()
-                .putAll(extras)
-                .onResult(callback)
-                .start(destination);
-    }
-
-    public void requestPermission(final IPermissionRequester requester, final int requestCode, final String... permissions) {
-        Papyrus.requestPermissions(requester, permissions);
-    }
 
     public boolean shouldShowRational(String permission) {
-        return Papyrus.shouldShowRational(permission);
+        return Papyrus.Companion.shouldShowRational(permission);
     }
 
     public static void start(Class<? extends Activity> destination, Bundle bundle, boolean finish) {
-        Papyrus.navigate()
+        Papyrus.Companion.navigate()
                 .putAll(bundle)
                 .start(destination);
         if (finish) {
-            Papyrus.finishCurrentActivity();
+            Papyrus.Companion.finishCurrentActivity();
         }
     }
 
     public static void start(Intent intent, boolean finish) {
-        Papyrus.navigate()
+        Papyrus.Companion.navigate()
                 .startActivity(intent);
         if (finish) {
-            Papyrus.finishCurrentActivity();
+            Papyrus.Companion.finishCurrentActivity();
         }
-    }
-
-    public static void startForResult(Class<? extends Activity> destination, Bundle bundle, IResultCallback callback) {
-        Papyrus.navigate()
-                .putAll(bundle)
-                .onResult(callback)
-                .start(destination);
-    }
-
-    public static void startForResult(Intent intent, IResultCallback callback) {
-        Papyrus.navigate()
-                .onResult(callback)
-                .startActivity(intent);
-    }
-
-    public static void startWithClearStack(Class<? extends Activity> destination, Bundle bundle) {
-        Papyrus.navigate()
-                .putAll(bundle)
-                .clearTask()
-                .start(destination);
-    }
-
-    /**
-     * @deprecated
-     */
-    public PapyrusAlertActivity.Handle showAlert(int titleRes, int messageRes, int positiveRes, int negativeRes, DialogCallbacks callback) {
-        PapyrusAlertActivity.Handle handle = new PapyrusAlertActivity.Handle();
-        new PapyrusAlertActivity.Builder()
-                .title(titleRes)
-                .message(messageRes)
-                .positive(positiveRes)
-                .negative(negativeRes)
-                .callbacks(callback)
-                .show(handle);
-        return handle;
-    }
-
-    /**
-     * @deprecated
-     */
-    public papyrus.alerts.PapyrusAlertActivity.Handle showAlert(String title, String message, String positive, String negative, final DialogCallbacks callback) {
-        PapyrusAlertActivity.Handle handle = new PapyrusAlertActivity.Handle();
-        new PapyrusAlertActivity.Builder()
-                .title(title)
-                .message(message)
-                .positive(positive)
-                .negative(negative)
-                .callbacks(callback)
-                .show(handle);
-        return handle;
     }
 
     /*

@@ -2,7 +2,7 @@ package papyrus.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import java.util.LinkedList;
 
 import papyrus.toolbar.PapyrusToolbar;
 import papyrus.toolbar.tabs.Tab;
-import papyrus.toolbar.tabs.TabbedPapyrusToolbar;
 import papyrus.toolbar.tabs.iface.ITabbedPageStateCallback;
 
 public abstract class PapyrusFragment extends PapyrusBaseFragment implements ITabbedPageStateCallback {

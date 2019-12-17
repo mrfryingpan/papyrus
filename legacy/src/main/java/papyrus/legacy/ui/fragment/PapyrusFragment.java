@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import papyrus.alerts.DialogCallbacks;
-import papyrus.alerts.PapyrusAlertActivity;
 import papyrus.core.Papyrus;
 import papyrus.core.iface.IPermissionRequester;
 import papyrus.core.iface.IResultCallback;
@@ -22,7 +21,7 @@ public abstract class PapyrusFragment extends papyrus.ui.fragment.PapyrusFragmen
     }
 
     public void startActivity(final Class<? extends Activity> destination, final Bundle extras, final boolean finish) {
-        Papyrus.navigate()
+        Papyrus.Companion.navigate()
                 .putAll(extras)
                 .start(destination);
         if (finish) {
@@ -31,25 +30,25 @@ public abstract class PapyrusFragment extends papyrus.ui.fragment.PapyrusFragmen
     }
 
     public void startActivityWithClearStack(final Class<? extends Activity> destination, final Bundle extras) {
-        Papyrus.navigate()
+        Papyrus.Companion.navigate()
                 .putAll(extras)
                 .clearTask()
                 .start(destination);
     }
 
     public void startActivity(final Intent intent, final boolean finish) {
-        Papyrus.navigate().startActivity(intent);
+        Papyrus.Companion.navigate().startActivity(intent);
         if (finish) {
             maybeFinishActivity();
         }
     }
 
     public void requestPermission(final IPermissionRequester requester, final int requestCode, final String... permission) {
-        Papyrus.requestPermissions(requester, permission);
+        Papyrus.Companion.requestPermissions(requester, permission);
     }
 
     public boolean shouldShowRational(String permission) {
-        return Papyrus.shouldShowRational(permission);
+        return Papyrus.Companion.shouldShowRational(permission);
     }
 
     public void backPress() {
@@ -66,13 +65,13 @@ public abstract class PapyrusFragment extends papyrus.ui.fragment.PapyrusFragmen
     }
 
     public void startActivityForResult(final Intent intent, final IResultCallback callback) {
-        Papyrus.navigate()
+        Papyrus.Companion.navigate()
                 .onResult(callback)
                 .startActivity(intent);
     }
 
     public void startActivityForResult(final Class<? extends Activity> destination, final Bundle extras, final IResultCallback callback) {
-        Papyrus.navigate()
+        Papyrus.Companion.navigate()
                 .putAll(extras)
                 .onResult(callback)
                 .start(destination);

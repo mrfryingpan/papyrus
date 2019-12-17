@@ -13,7 +13,7 @@ android {
         versionName rootProject.ext.versionName
         applicationId "papyrus.demo"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -27,14 +27,16 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.Support}"
-    implementation "com.google.android.gms:play-services-analytics:16.0.7"
+
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.AppCompat}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.AppCompatRecycler}"
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
-    androidTestImplementation "com.android.support.test:runner:${rootProject.ext.TestRunner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${rootProject.ext.Espresso}"
+    androidTestImplementation "androidx.test:runner:${rootProject.ext.TestRunner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.Espresso}"
 
     api project(':core')
+    api project(':adapter')
     api project(':picker')
     api project(':sleuth')
     api project(':sleuth_ga')

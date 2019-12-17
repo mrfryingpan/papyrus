@@ -2,7 +2,7 @@ package papyrus.legacy.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.design.widget.NavigationView;
+import com.google.android.material.navigation.NavigationView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;

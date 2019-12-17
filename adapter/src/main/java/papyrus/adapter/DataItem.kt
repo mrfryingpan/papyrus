@@ -1,3 +1,6 @@
 package papyrus.adapter
 
-open class DataItem(val target: Int, val item: Any, val type: Int)
+abstract class DataItem(val target: Int, var item: Any?, val type: Int) {
+    val viewType: Int
+        get() = item?.let { type } ?: -1
+}

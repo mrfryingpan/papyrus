@@ -1,18 +1,17 @@
 package papyrus.adapter
 
-import android.support.annotation.CallSuper
-import android.support.v7.util.SortedList
+import androidx.annotation.CallSuper
+import androidx.recyclerview.widget.SortedList
 import android.view.ViewGroup
 import papyrus.util.PapyrusExecutor
-import papyrus.util.PapyrusUtil
 
-
-abstract class DataSource<T : DataItem>(private val modules: List<Module>?) : SortedList.Callback<DataItem>() {
-    var data: SortedList<DataItem> = SortedList<DataItem>(DataItem::class.java, this)
+abstract class DataSource<T : DataItem>(vararg modules: Module) {
+    var moduleRegistry = ModuleRegistry(arrayListOf(*modules))
+    val data: SortedList<DataItem> = SortedList(DataItem::class.java, DataSourceSorter { adapter })
     var paginationThreshold: Int? = null
     var dataEnded: Boolean = true
     var loading: Boolean = false
-    var adapter: DataSourceAdapter<T>? = null
+    var adapter: DataSourceAdapter? = null
 
     fun count() = data.size()
 
@@ -34,90 +33,52 @@ abstract class DataSource<T : DataItem>(private val modules: List<Module>?) : So
     @CallSuper
     fun refresh() {
         data.clear()
-        modules?.forEach { it.refresh() }
+        moduleRegistry.refresh()
         paginationThreshold?.let {
             dataEnded = false
         }
         loadNext()
     }
 
-    private fun addModulesAtIndex(index: Int): Int {
-        modules?.forEach { module ->
-            if (module.wantsPlacement(index)) {
-                module.load(index, object : ModuleCallback {
-                    override fun onComplete(item: DataItem, hasData: Boolean) {
-                        if (hasData) {
-                            PapyrusExecutor.ui {
-                                data.add(item)
-                            }
-                        } else {
-                            PapyrusExecutor.ui {
-                                data.remove(item)
-                            }
-                        }
-                    }
-                })
-                return addModulesAtIndex(index + 1) + 1
-            }
+    private fun addItem(index: Int, thing: Any): Int {
+        val moduleItems = moduleRegistry.modulesForIndex(index)?.fold(ArrayList<DataItem?>()) { items, module ->
+            module.load(index + items.size)?.let(items::add)
+            items
         }
-        return 0
-    }
-
-    fun onNewPage(page: List<Any>) {
-        val start = data.size()
-
-        PapyrusExecutor.ui {
-            if (PapyrusUtil.isEmpty(page)) {
-                dataEnded = true
+        return moduleItems?.let { items ->
+            if (items.isEmpty()) {
+                null
             } else {
-                page.forEachIndexed { i, thing ->
-                    var index = start + i
-                    index += addModulesAtIndex(index)
-                    data.add(createDataItem(index, thing))
-                }
+                items.forEach { data.add(it) }
+                addItem(index + items.size, thing)
+                index + items.size
             }
+        } ?: run {
+            data.add(createDefaultDataItem(index, thing))
+            index + 1
         }
     }
-
 
     @CallSuper
     open fun loadNext() {
         loading = true
+        makeNextRequest { page ->
+            loading = false
+            PapyrusExecutor.ui {
+                data.beginBatchedUpdates()
+                if (page.isNullOrEmpty()) {
+                    dataEnded = true
+                } else {
+                    page.fold(data.size()) { index, item ->
+                        addItem(index, item)
+                    }
+                }
+                data.endBatchedUpdates()
+            }
+        }
     }
 
-    abstract fun <T : DataItem> createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<T>
-    protected abstract fun createDataItem(index: Int, data: Any): DataItem
-    protected abstract fun makeNextRequest()
-
-    override fun areItemsTheSame(a: DataItem?, b: DataItem?): Boolean {
-        return a?.target == b?.target && a?.item == b?.item
-    }
-
-    override fun areContentsTheSame(a: DataItem?, b: DataItem?): Boolean {
-        return a?.item == b?.item
-    }
-
-    override fun compare(a: DataItem, b: DataItem): Int {
-        return a.target.compareTo(b.target)
-    }
-
-    override fun onMoved(fromPosition: Int, toPosition: Int) {
-        adapter?.notifyItemMoved(fromPosition, toPosition)
-    }
-
-    override fun onChanged(position: Int, count: Int) {
-        adapter?.notifyItemRangeChanged(position, count)
-    }
-
-    override fun onInserted(position: Int, count: Int) {
-        adapter?.notifyItemRangeInserted(position, count)
-    }
-
-    override fun onRemoved(position: Int, count: Int) {
-        adapter?.notifyItemRangeRemoved(position, count)
-    }
-
-    override fun onChanged(position: Int, count: Int, payload: Any?) {
-        adapter?.notifyItemRangeChanged(position, count, payload)
-    }
+    abstract fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem>
+    protected abstract fun createDefaultDataItem(index: Int, data: Any): DataItem
+    protected abstract fun makeNextRequest(onNewPage: (ArrayList<out Any>) -> Unit)
 }

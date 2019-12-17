@@ -24,6 +24,12 @@ public class TouchBlocker implements View.OnTouchListener {
         }
     }
 
+    public static void unBlock(View... views) {
+        for (View view : views) {
+            view.setOnTouchListener(null);
+        }
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return true;

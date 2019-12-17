@@ -5,14 +5,15 @@ import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 
+@Suppress("UNCHECKED_CAST")
 open class WeakDelegate {
     companion object {
         inline fun <reified T : Any> of(t: T): T {
             val tRef = WeakReference(t)
-            return Proxy.newProxyInstance(T::class.java.classLoader, T::class.java.interfaces) { o, method, objects ->
-                val t = tRef.get()
-                if (t != null) {
-                    method.invoke(t, *objects)
+            return Proxy.newProxyInstance(T::class.java.classLoader, T::class.java.interfaces) { _, method, objects ->
+                val instance = tRef.get()
+                if (instance != null) {
+                    method.invoke(instance, *objects)
                 } else {
                     val returnType = method.returnType
                     if (!returnType.isPrimitive) {
@@ -27,7 +28,7 @@ open class WeakDelegate {
         }
 
         fun <T> dummy(clazz: Class<T>): T {
-            return Proxy.newProxyInstance(clazz.classLoader, arrayOf<Class<*>>(clazz)) { o, method, objects -> null } as T
+            return Proxy.newProxyInstance(clazz.classLoader, arrayOf<Class<*>>(clazz)) { _, _, _ -> null } as T
         }
     }
 }

@@ -1,8 +1,9 @@
 package papyrus.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import papyrus.pager.PageAdapter;
 import papyrus.pager.PageItem;
+import papyrus.pager.iface.IPageCreator;
 import papyrus.toolbar.tabs.Tab;
 import papyrus.toolbar.tabs.TabStrip;
 import papyrus.toolbar.tabs.iface.ITabbedPageCreator;
@@ -29,7 +31,7 @@ public abstract class PapyrusTabsFragment extends PapyrusFragment implements ITa
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new PageAdapter(getChildFragmentManager(), this);
+        adapter = new PageAdapter(getChildFragmentManager(), this, 0);
         pager = view.findViewById(R.id.pager);
 
         pager.setAdapter(adapter);

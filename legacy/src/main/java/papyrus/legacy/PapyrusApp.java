@@ -2,7 +2,7 @@ package papyrus.legacy;
 
 import android.Manifest;
 import android.app.Application;
-import android.support.annotation.RequiresPermission;
+import androidx.annotation.RequiresPermission;
 
 import papyrus.core.Papyrus;
 
@@ -21,7 +21,7 @@ public class PapyrusApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Papyrus.init(this);
+        Papyrus.Companion.init(this);
         instance = this;
     }
 
@@ -30,7 +30,7 @@ public class PapyrusApp extends Application {
      */
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     public static boolean isNetworkConnected() {
-        return Papyrus.isNetworkConnected();
+        return Papyrus.Companion.isNetworkConnected();
     }
 
 

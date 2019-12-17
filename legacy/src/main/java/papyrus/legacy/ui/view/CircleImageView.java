@@ -9,16 +9,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.text.TextUtils;
+
+import androidx.annotation.ColorInt;
+
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import papyrus.legacy.PapyrusApp;
 import papyrus.legacy.R;
 import papyrus.legacy.util.Res;
 

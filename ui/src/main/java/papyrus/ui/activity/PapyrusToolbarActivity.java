@@ -2,10 +2,11 @@ package papyrus.ui.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.List;
 

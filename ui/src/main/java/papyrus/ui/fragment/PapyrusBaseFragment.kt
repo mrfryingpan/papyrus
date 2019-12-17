@@ -1,17 +1,17 @@
 package papyrus.ui.fragment
 
 import android.content.Context
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.View
 
 import papyrus.ui.iface.IBaseView
 import papyrus.util.WeakDelegate
 
-abstract class PapyrusBaseFragment : Fragment(), IBaseView {
+abstract class PapyrusBaseFragment : androidx.fragment.app.Fragment(), IBaseView {
 
     private var callThrough: IBaseView? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callThrough = context as? IBaseView
     }
