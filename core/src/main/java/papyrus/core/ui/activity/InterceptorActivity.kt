@@ -32,7 +32,7 @@ class InterceptorActivity : Activity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callback?.send(resultCode, Bundle().apply {
             putParcelable("result", data)
