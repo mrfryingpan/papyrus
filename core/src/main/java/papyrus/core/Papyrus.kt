@@ -127,23 +127,25 @@ class Papyrus(val appContext: Application, val connectivityManager: Connectivity
                         navigate()
                                 .action("requestPermissions")
                                 .putStringArrayList("permissions", permissionsToRequest)
-                                .onResult { _, data ->
-                                    val permissions = data.getStringArrayExtra("permissions")
-                                    val grantResults = data.getIntArrayExtra("grantResults")
-                                    val request = instance?.permissionRequesters?.get(inx)
-                                    instance?.permissionRequesters?.remove(inx)
+                                .onResult { _, _data ->
+                                    _data?.let { data ->
+                                        val permissions = data.getStringArrayExtra("permissions")
+                                        val grantResults = data.getIntArrayExtra("grantResults")
+                                        val request = instance?.permissionRequesters?.get(inx)
+                                        instance?.permissionRequesters?.remove(inx)
 
-                                    val granted = request?.alreadyGranted ?: ArrayList()
-                                    val denied = ArrayList<String>()
+                                        val granted = request?.alreadyGranted ?: ArrayList()
+                                        val denied = ArrayList<String>()
 
-                                    permissions.indices.forEach { i ->
-                                        when (grantResults[i]) {
-                                            PackageManager.PERMISSION_GRANTED -> granted.add(permissions[i])
-                                            PackageManager.PERMISSION_DENIED -> denied.add(permissions[i])
+                                        permissions.indices.forEach { i ->
+                                            when (grantResults[i]) {
+                                                PackageManager.PERMISSION_GRANTED -> granted.add(permissions[i])
+                                                PackageManager.PERMISSION_DENIED -> denied.add(permissions[i])
+                                            }
                                         }
-                                    }
 
-                                    request?.callback?.invoke(granted, denied)
+                                        request?.callback?.invoke(granted, denied)
+                                    }
                                 }
                                 .start(InterceptorActivity::class.java)
                     } else {

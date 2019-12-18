@@ -20,7 +20,7 @@ import papyrus.core.ui.activity.InterceptorActivity
 import papyrus.util.WeakDelegate
 import kotlin.reflect.KClass
 
-typealias IResultCallback = (resultCode: Int, data: Intent) -> Unit
+typealias IResultCallback = (resultCode: Int, data: Intent?) -> Unit
 
 class Navigator {
     internal var isActivity: Boolean = false
@@ -211,7 +211,7 @@ class Navigator {
         resultCallback?.also { callback ->
             val receiver = object : ResultReceiver(Handler(Looper.getMainLooper())) {
                 override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                    callback.invoke(resultCode, resultData.getParcelable<Parcelable>("result") as Intent)
+                    callback.invoke(resultCode, resultData.getParcelable<Parcelable>("result") as? Intent)
                 }
             }
             Navigator(if (isActivity) context as Activity else context)
