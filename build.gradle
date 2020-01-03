@@ -25,7 +25,7 @@ allprojects {
 
 ext {
     groupID = 'com.papyrus'
-    versionName = "1.2.2"
+    versionName = "1.2.3"
     versionCode = 8
 
     minSdkVersion = 16

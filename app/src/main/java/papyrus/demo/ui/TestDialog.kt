@@ -1,5 +1,6 @@
 package papyrus.demo.ui
 
+import android.os.Bundle
 import android.widget.TextView
 import papyrus.alerts.ViewBinder
 import papyrus.demo.R
@@ -11,7 +12,7 @@ class TestDialog : ViewBinder() {
             R.id.button_negative
     )
 
-    override fun bind() {
+    override fun bind(bundle: Bundle?) {
         itemView.findViewById<TextView>(R.id.label_title)?.apply {
             text = "Test Dialog"
         }

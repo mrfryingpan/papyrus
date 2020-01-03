@@ -1,5 +1,6 @@
 package papyrus.alerts
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -18,6 +19,6 @@ abstract class ViewBinder {
 
     abstract fun buttonIDs(): Array<Int>
 
-    abstract fun bind()
+    abstract fun bind(config: Bundle?)
 }
 

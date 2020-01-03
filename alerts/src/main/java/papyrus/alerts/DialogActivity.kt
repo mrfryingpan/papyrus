@@ -58,7 +58,7 @@ class DialogActivity : AppCompatActivity() {
     private fun configureLayout() {
         viewBinder?.let { viewBinder ->
             viewBinder.initializeView(dialogContentLayout).also { contentView ->
-                viewBinder.bind()
+                viewBinder.bind(intent.getBundleExtra("configuration"))
                 viewBinder.buttonIDs().forEach { buttonID ->
                     contentView.findViewById<View>(buttonID).setOnClickListener {
                         resultReceiver?.send(buttonID, Bundle())
@@ -91,6 +91,11 @@ class DialogActivity : AppCompatActivity() {
 
 class DialogBuilder(val bundle: Bundle) {
     constructor() : this(Bundle())
+
+    fun configuration(configurator: Bundle.() -> Unit): DialogBuilder {
+        bundle.putBundle("configuration", Bundle().apply(configurator))
+        return this
+    }
 
     fun viewBinder(viewBinder: KClass<out ViewBinder>): DialogBuilder {
         bundle.putSerializable("viewBinder", viewBinder.java)
