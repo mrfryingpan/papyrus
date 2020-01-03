@@ -61,8 +61,9 @@ class DialogActivity : AppCompatActivity() {
                 viewBinder.bind(intent.getBundleExtra("configuration"))
                 viewBinder.buttonIDs().forEach { buttonID ->
                     contentView.findViewById<View>(buttonID).setOnClickListener {
-                        resultReceiver?.send(buttonID, Bundle())
-                        handleBackPress()
+                        handleBackPress {
+                            resultReceiver?.send(buttonID, Bundle())
+                        }
                     }
                 }
             }
@@ -81,8 +82,9 @@ class DialogActivity : AppCompatActivity() {
         onCancel()
     }
 
-    fun handleBackPress() {
+    fun handleBackPress(after: (() -> Unit)? = null) {
         Animations.fadeOut(dialogRootLayout) {
+            after?.invoke()
             finish()
             overridePendingTransition(0, 0)
         }
