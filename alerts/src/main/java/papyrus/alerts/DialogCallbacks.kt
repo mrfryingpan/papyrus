@@ -19,7 +19,7 @@ class DialogCallbacks(vararg callbacks: DialogCallback) {
     }
 
     fun onResult(id: Int) {
-        callbackMap[id].invoke()
+        callbackMap[id]?.invoke()
     }
 }
 
