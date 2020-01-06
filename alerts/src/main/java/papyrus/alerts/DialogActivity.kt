@@ -10,6 +10,7 @@ import papyrus.util.Animations
 import papyrus.util.PapyrusExecutor
 import papyrus.util.TouchBlocker
 import java.lang.ref.WeakReference
+import java.util.*
 import kotlin.reflect.KClass
 
 class DialogActivity : AppCompatActivity() {
@@ -18,16 +19,6 @@ class DialogActivity : AppCompatActivity() {
 
     private var resultReceiver: ResultReceiver? = null
     private var viewBinder: ViewBinder? = null
-
-    var cancelable = true
-        set(value) {
-            field = value
-            if (value) {
-                TouchBlocker.unBlock(dialogRootLayout)
-            } else {
-                TouchBlocker.block(dialogRootLayout)
-            }
-        }
 
     private fun parseExtras(extras: Bundle) {
         resultReceiver = extras.getParcelable("resultReceiver")
@@ -57,7 +48,13 @@ class DialogActivity : AppCompatActivity() {
 
     private fun configureLayout() {
         viewBinder?.let { viewBinder ->
-            viewBinder.initializeView(dialogContentLayout).also { contentView ->
+            viewBinder.initializeView(dialogContentLayout) { cancelable ->
+                if (cancelable) {
+                    TouchBlocker.unBlock(dialogRootLayout)
+                } else {
+                    TouchBlocker.block(dialogRootLayout)
+                }
+            }.also { contentView ->
                 viewBinder.bind(intent.getBundleExtra("configuration"))
                 viewBinder.buttonIDs().forEach { buttonID ->
                     contentView.findViewById<View>(buttonID).setOnClickListener {
