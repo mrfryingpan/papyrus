@@ -41,22 +41,20 @@ abstract class DataSource<T : DataItem>(vararg modules: Module) {
     }
 
     private fun addItem(index: Int, thing: Any): Int {
-        val moduleItems = moduleRegistry.modulesForIndex(index)?.fold(ArrayList<DataItem?>()) { items, module ->
-            module.load(index + items.size)?.let(items::add)
-            items
-        }
-        return moduleItems?.let { items ->
-            if (items.isEmpty()) {
-                null
-            } else {
-                items.forEach { data.add(it) }
-                addItem(index + items.size, thing)
-                index + items.size
-            }
-        } ?: run {
-            data.add(createDefaultDataItem(index, thing))
-            index + 1
-        }
+        return moduleRegistry.modulesForIndex(index)
+                ?.fold(ArrayList<DataItem?>()) { items, module ->
+                    module.load(index + items.size)?.let(items::add)
+                    items
+                }?.takeIf {
+                    it.isNotEmpty()
+                }?.let { items ->
+                    items.forEach { data.add(it) }
+                    addItem(index + items.size, thing)
+                }
+                ?: run {
+                    data.add(createDefaultDataItem(index, thing))
+                    index + 1
+                }
     }
 
     @CallSuper
@@ -69,14 +67,13 @@ abstract class DataSource<T : DataItem>(vararg modules: Module) {
                 if (page.isNullOrEmpty()) {
                     dataEnded = true
                 } else {
-                    page.fold(data.size()) { index, item ->
-                        addItem(index, item)
-                    }
+                    page.fold(data.size(), ::addItem)
                 }
                 data.endBatchedUpdates()
             }
         }
     }
+
 
     abstract fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem>
     protected abstract fun createDefaultDataItem(index: Int, data: Any): DataItem

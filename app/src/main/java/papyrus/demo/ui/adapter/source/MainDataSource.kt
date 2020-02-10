@@ -8,7 +8,6 @@ import papyrus.adapter.DataItem
 import papyrus.adapter.DataSource
 import papyrus.adapter.PapyrusViewHolder
 import papyrus.alerts.DialogBuilder
-import papyrus.alerts.DialogCallback
 import papyrus.core.Papyrus
 import papyrus.demo.App
 import papyrus.demo.R
@@ -38,15 +37,19 @@ class MainDataSource : DataSource<DataItem>(
         },
         ButtonModule(6, "Alert Me!") {
             DialogBuilder()
+                    .configuration {
+                        putString("title", "Test Dialog")
+                        putString("message", "This is a test Dialog, and this is the message")
+                        putString("positive", "Ok")
+                        putString("negative", "Nah")
+                    }
                     .viewBinder(TestDialog::class)
-                    .callbacks(
-                            DialogCallback(R.id.button_positive) {
-                                Toast.makeText(App.get(), "Positive Response", Toast.LENGTH_SHORT).show()
-                            },
-                            DialogCallback(R.id.button_negative) {
-                                Toast.makeText(App.get(), "Negative Response", Toast.LENGTH_SHORT).show()
-                            }
-                    )
+                    .callback(R.id.button_positive) {
+                        Toast.makeText(App.get(), "Positive Response", Toast.LENGTH_SHORT).show()
+                    }
+                    .callback(R.id.button_negative) {
+                        Toast.makeText(App.get(), "Negative Response", Toast.LENGTH_SHORT).show()
+                    }
                     .show()
         },
         AlphaModule(2, 5)

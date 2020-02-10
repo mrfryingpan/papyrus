@@ -9,6 +9,8 @@ abstract class ViewBinder {
     var cancelableObserver: ((Boolean) -> Unit)? = null
     lateinit var itemView: ViewGroup
 
+    open val layoutID: Int = R.layout.dialog_default
+
     var cancelable = true
         set(value) {
             field = value
@@ -22,10 +24,6 @@ abstract class ViewBinder {
         parent.addView(itemView)
         return itemView
     }
-
-    open val layoutID: Int = R.layout.dialog_default
-
-    abstract fun buttonIDs(): Array<Int>
 
     abstract fun bind(config: Bundle?)
 }

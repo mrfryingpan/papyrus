@@ -56,7 +56,7 @@ class DialogActivity : AppCompatActivity() {
                 }
             }.also { contentView ->
                 viewBinder.bind(intent.getBundleExtra("configuration"))
-                viewBinder.buttonIDs().forEach { buttonID ->
+                intent.getIntArrayExtra("clickTargets")?.forEach { buttonID ->
                     contentView.findViewById<View>(buttonID).setOnClickListener {
                         handleBackPress {
                             resultReceiver?.send(buttonID, Bundle())
@@ -89,6 +89,8 @@ class DialogActivity : AppCompatActivity() {
 }
 
 class DialogBuilder(val bundle: Bundle) {
+    val dialogCallbacks: DialogCallbacks = DialogCallbacks()
+
     constructor() : this(Bundle())
 
     fun configuration(configurator: Bundle.() -> Unit): DialogBuilder {
@@ -106,14 +108,8 @@ class DialogBuilder(val bundle: Bundle) {
         return this
     }
 
-    fun callbacks(vararg callbacks: DialogCallback): DialogBuilder {
-        val dialogCallbacks = DialogCallbacks(*callbacks)
-        dialogCallbacks.cancelID?.let { bundle.putInt("cancelID", it) }
-        bundle.putParcelable("resultReceiver", object : ResultReceiver(PapyrusExecutor.uiHandler) {
-            override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                dialogCallbacks.onResult(resultCode)
-            }
-        })
+    fun callback(id: Int, type: Int = ACTION_GENERIC, action: () -> Unit): DialogBuilder {
+        dialogCallbacks.addCallback(id, type, action)
         return this
     }
 
@@ -123,6 +119,13 @@ class DialogBuilder(val bundle: Bundle) {
     }
 
     fun show() {
+        dialogCallbacks.cancelID?.let { bundle.putInt("cancelID", it) }
+        bundle.putIntArray("clickTargets", dialogCallbacks.buttonIDs)
+        bundle.putParcelable("resultReceiver", object : ResultReceiver(PapyrusExecutor.uiHandler) {
+            override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+                dialogCallbacks.onResult(resultCode)
+            }
+        })
         Papyrus.navigate()
                 .putAll(bundle)
                 .start(DialogActivity::class)

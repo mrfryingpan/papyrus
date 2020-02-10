@@ -6,18 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.net.Uri
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Parcelable
-import android.os.ResultReceiver
-
-import java.io.Serializable
-import java.util.ArrayList
-import java.util.Collections
-import java.util.HashSet
+import android.os.*
 import papyrus.core.ui.activity.InterceptorActivity
 import papyrus.util.WeakDelegate
+import java.io.Serializable
+import java.util.*
 import kotlin.reflect.KClass
 
 typealias IResultCallback = (resultCode: Int, data: Intent?) -> Unit
@@ -180,17 +173,14 @@ class Navigator {
     }
 
     private fun prepareIntent(intent: Intent): Intent {
-        var intentFlags = 0
-        for (flag in flags) {
-            intentFlags = intentFlags and flag
+        intent.flags = flags.fold(0) { intentFlags, flag ->
+            intentFlags or flag
         }
-        intent.flags = intentFlags
         intent.putExtras(extras)
         intent.data = data
         intent.action = action
-        if (customizer != null) {
-            customizer!!.customize(intent)
-        }
+        customizer?.customize(intent)
+
         return intent
     }
 
