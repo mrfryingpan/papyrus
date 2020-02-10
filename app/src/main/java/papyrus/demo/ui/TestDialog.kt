@@ -1,19 +1,20 @@
 package papyrus.demo.ui
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.dialog_default.view.*
+import android.widget.TextView
 import papyrus.alerts.ViewBinder
+import papyrus.demo.R
 
 class TestDialog : ViewBinder() {
-    val title = itemView.label_title
-    val message = itemView.label_message
-    val positive = itemView.button_positive
-    val negative = itemView.button_negative
+    val title: TextView = itemView.findViewById(R.id.label_title)
+    val message: TextView = itemView.findViewById(R.id.label_message)
+    val positive: TextView = itemView.findViewById(R.id.button_positive)
+    val negative: TextView = itemView.findViewById(R.id.button_negative)
 
-    override fun bind(bundle: Bundle?) {
-        title.text = bundle?.getString("title")
-        message.text = bundle?.getString("message")
-        positive.text = bundle?.getString("positive")
-        negative.text = bundle?.getString("negative")
+    override fun bind(config: Bundle?) {
+        title.text = config?.getString("title")
+        message.text = config?.getString("message")
+        positive.text = config?.getString("positive")
+        negative.text = config?.getString("negative")
     }
 }

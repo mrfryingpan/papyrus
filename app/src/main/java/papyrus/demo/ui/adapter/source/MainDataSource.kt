@@ -24,7 +24,7 @@ import papyrus.util.PapyrusExecutor
 class MainDataSource : DataSource<DataItem>(
         ButtonModule(3, "Test Result") {
             Papyrus.navigate()
-                    .onResult { resultCode, data ->
+                    .onResult { resultCode, _ ->
                         Log.wtf("PAPYRUS", "Result: $resultCode")
                     }
                     .start(QueryActivity::class.java)
