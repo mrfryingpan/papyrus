@@ -1,7 +1,14 @@
 package papyrus.adapter
 
-interface Module {
-    fun refresh()
+abstract class Module {
+    abstract fun invalidate()
 
-    fun load(index: Int): DataItem?
+    abstract fun createDataItem(index: Int): DataItem<*>?
+
+    fun createDataItem(index: Int, observer: ModuleObserver): DataItem<*>? {
+        return createDataItem(index)?.also {
+            it.observer = observer
+        }
+    }
+
 }

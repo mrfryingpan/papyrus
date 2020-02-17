@@ -17,7 +17,7 @@ abstract class ViewBinder {
             cancelableObserver?.invoke(value)
         }
 
-    fun initializeView(parent: ViewGroup, cancelableObserver: (Boolean)->Unit): ViewGroup {
+    fun initializeView(parent: ViewGroup, cancelableObserver: (Boolean) -> Unit): ViewGroup {
         this.cancelableObserver = cancelableObserver
         itemView = (LayoutInflater.from(parent.context).inflate(layoutID, parent, false) as? ViewGroup)
                 ?: throw IllegalStateException("layout ${parent.context.resources.getResourceName(layoutID)} must have ViewGroup root")
@@ -25,6 +25,9 @@ abstract class ViewBinder {
         return itemView
     }
 
-    abstract fun bind(config: Bundle?)
+    open fun bind(config: Bundle?) = Unit
+    open fun bind(config: Bundle?, send: (Int) -> Unit) = bind(config)
+
+
 }
 

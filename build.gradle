@@ -25,7 +25,7 @@ allprojects {
 
 ext {
     groupID = 'com.papyrus'
-    versionName = "1.2.7"
+    versionName = "1.2.8"
     versionCode = 11
 
     minSdkVersion = 16
@@ -37,6 +37,7 @@ ext {
     AppCompat = "1.1.0"
     AppCompatAnnotations = "1.1.0"
     AppCompatRecycler = "1.1.0"
+    SwipeRefresh = "1.0.0"
     Material = "1.0.0"
     Support = "28+"
     JUnit = "4.12"

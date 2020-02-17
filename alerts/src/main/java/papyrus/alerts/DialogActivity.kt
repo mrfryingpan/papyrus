@@ -10,7 +10,6 @@ import papyrus.util.Animations
 import papyrus.util.PapyrusExecutor
 import papyrus.util.TouchBlocker
 import java.lang.ref.WeakReference
-import java.util.*
 import kotlin.reflect.KClass
 
 class DialogActivity : AppCompatActivity() {
@@ -35,7 +34,7 @@ class DialogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.intent.extras?.also { extras ->
             parseExtras(extras)
-            this.setContentView(R.layout.activity_dialog)
+            this.setContentView(intent.getIntExtra("parentLayoutID", R.layout.activity_dialog))
             overridePendingTransition(0, 0)
             configureLayout()
             this.dialogRootLayout.setOnClickListener {
@@ -55,24 +54,26 @@ class DialogActivity : AppCompatActivity() {
                     TouchBlocker.block(dialogRootLayout)
                 }
             }.also { contentView ->
-                viewBinder.bind(intent.getBundleExtra("configuration"))
+                viewBinder.bind(intent.getBundleExtra("configuration"), send)
                 intent.getIntArrayExtra("clickTargets")?.forEach { buttonID ->
                     contentView.findViewById<View>(buttonID).setOnClickListener {
-                        handleBackPress {
-                            resultReceiver?.send(buttonID, Bundle())
-                        }
+                        send(buttonID)
                     }
                 }
             }
         }
+    }
 
+    private val send: (Int) -> Unit = {
+        handleBackPress {
+            resultReceiver?.send(it, Bundle())
+        }
     }
 
     fun onCancel() {
         intent?.getIntExtra("cancelID", -1)?.takeIf { it != -1 }?.let { cancelID ->
-            resultReceiver?.send(cancelID, Bundle())
+            send(cancelID)
         }
-        handleBackPress()
     }
 
     override fun onBackPressed() {
@@ -103,13 +104,18 @@ class DialogBuilder(val bundle: Bundle) {
         return this
     }
 
-    fun layout(@LayoutRes layoutID: Int): DialogBuilder {
-        bundle.putInt("layoutID", layoutID)
+    fun hostLayout(@LayoutRes layoutID: Int): DialogBuilder {
+        bundle.putInt("parentLayoutID", layoutID)
         return this
     }
 
     fun callback(id: Int, type: Int = ACTION_GENERIC, action: () -> Unit): DialogBuilder {
         dialogCallbacks.addCallback(id, type, action)
+        return this
+    }
+
+    fun callback( action:(Int)->Unit): DialogBuilder {
+        dialogCallbacks.addFallback(action)
         return this
     }
 

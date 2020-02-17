@@ -4,8 +4,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 
 
-class DataSourceAdapter(private val dataSource: DataSource<out DataItem>)
-    : RecyclerView.Adapter<PapyrusViewHolder<out DataItem>>() {
+class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>)
+    : RecyclerView.Adapter<PapyrusViewHolder<out DataItem<*>>>() {
 
     init {
         dataSource.adapter = this
@@ -19,7 +19,7 @@ class DataSourceAdapter(private val dataSource: DataSource<out DataItem>)
         return dataSource.count()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem<*>> {
         return if (viewType == -1) {
             EmptyViewHolder(parent)
         } else {
@@ -27,7 +27,7 @@ class DataSourceAdapter(private val dataSource: DataSource<out DataItem>)
         }
     }
 
-    override fun onBindViewHolder(holder: PapyrusViewHolder<out DataItem>, position: Int) {
+    override fun onBindViewHolder(holder: PapyrusViewHolder<out DataItem<*>>, position: Int) {
         holder.doBind(dataSource.getItem(position))
     }
 }

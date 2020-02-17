@@ -3,29 +3,25 @@ package papyrus.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import papyrus.alerts.DialogCallbacks;
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import org.jetbrains.annotations.NotNull;
+
 import papyrus.core.Papyrus;
-import papyrus.core.iface.IPermissionRequester;
-import papyrus.core.iface.IResultCallback;
 import papyrus.toolbar.Action;
 import papyrus.ui.R;
 import papyrus.ui.fragment.PapyrusFragment;
@@ -48,7 +44,7 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
@@ -145,28 +141,28 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
     }
 
     public static void addContentToActiveBackstack(PapyrusFragment fragment, int... animations) {
-        Papyrus.Companion.addFragmentToActiveBackstack(fragment, R.id.content_container, null, animations);
+        Papyrus.INSTANCE.addFragmentToActiveBackstack(fragment, R.id.content_container, null, animations);
     }
 
     public void addContentToBackstack(PapyrusFragment fragment, String name, int... animations) {
-        Papyrus.Companion.addFragmentToBackstack(this, fragment, R.id.content_container, name, animations);
+        Papyrus.INSTANCE.addFragmentToBackstack(this, fragment, R.id.content_container, name, animations);
     }
 
     public static void addContentToActiveBackstack(PapyrusFragment fragment, String name, int... animations) {
-        Papyrus.Companion.addFragmentToActiveBackstack(fragment, R.id.content_container, name, animations);
+        Papyrus.INSTANCE.addFragmentToActiveBackstack(fragment, R.id.content_container, name, animations);
     }
 
     public static boolean popBackstackTo(String name) {
-        return Papyrus.Companion.popBackstackTo(name);
+        return Papyrus.INSTANCE.popBackstackTo(name);
     }
 
     public static boolean popBackstackIncluding(String name) {
-        Papyrus.Companion.popBackstackIncluding(name);
+        Papyrus.INSTANCE.popBackstackIncluding(name);
         return false;
     }
 
     public void clearBackstack() {
-        Papyrus.Companion.clearBackstack(this);
+        Papyrus.INSTANCE.clearBackstack(this);
     }
 
     protected boolean hasBackstack() {
@@ -248,23 +244,23 @@ public class PapyrusActivity extends AppCompatActivity implements IBaseView {
      */
 
     public boolean shouldShowRational(String permission) {
-        return Papyrus.Companion.shouldShowRational(permission);
+        return Papyrus.INSTANCE.shouldShowRational(permission);
     }
 
     public static void start(Class<? extends Activity> destination, Bundle bundle, boolean finish) {
-        Papyrus.Companion.navigate()
+        Papyrus.INSTANCE.navigate()
                 .putAll(bundle)
                 .start(destination);
         if (finish) {
-            Papyrus.Companion.finishCurrentActivity();
+            Papyrus.INSTANCE.finishCurrentActivity();
         }
     }
 
     public static void start(Intent intent, boolean finish) {
-        Papyrus.Companion.navigate()
+        Papyrus.INSTANCE.navigate()
                 .startActivity(intent);
         if (finish) {
-            Papyrus.Companion.finishCurrentActivity();
+            Papyrus.INSTANCE.finishCurrentActivity();
         }
     }
 

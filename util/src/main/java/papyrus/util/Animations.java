@@ -136,7 +136,7 @@ public class Animations {
     }
 
     public static void slideOffBottom(View view) {
-        slideInBottom(view, null);
+        slideOffBottom(view, null);
     }
 
     public static void slideOffBottom(final View view, final Runnable completion) {

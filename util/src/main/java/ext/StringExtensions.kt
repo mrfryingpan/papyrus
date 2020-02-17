@@ -1,4 +1,4 @@
-package papyrus.util.ext
+package ext
 
 import android.text.TextUtils
 

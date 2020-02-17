@@ -30,6 +30,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:${rootProject.ext.AppCompat}"
     implementation "androidx.recyclerview:recyclerview:${rootProject.ext.AppCompatRecycler}"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${rootProject.ext.SwipeRefresh}"
 
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
     androidTestImplementation "androidx.test:runner:${rootProject.ext.TestRunner}"

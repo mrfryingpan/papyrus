@@ -3,8 +3,7 @@ package papyrus.sleuth.ga.annotation
 import android.util.Pair
 import papyrus.sleuth.SleuthAnnotation
 import papyrus.sleuth.ga.Params
-import papyrus.util.ext.fallback
-import java.util.*
+import ext.fallback
 
 
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION)

@@ -5,7 +5,7 @@ import android.util.Log
 import papyrus.sleuth.annotation.BooleanParam
 import papyrus.sleuth.annotation.FormattedParam
 import papyrus.sleuth.annotation.JoinedParam
-import papyrus.util.ext.either
+import ext.either
 import java.lang.IllegalArgumentException
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method

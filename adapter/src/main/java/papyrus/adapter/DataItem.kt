@@ -1,6 +1,18 @@
 package papyrus.adapter
 
-abstract class DataItem(val target: Int, var item: Any?, val type: Int) {
+import androidx.annotation.UiThread
+
+abstract class DataItem<T>(val target: Int, item: T?, val type: Int) {
+    var item: T? = item
+        @UiThread
+        set(value) {
+            field = value
+            observer?.onChanged(this)
+        }
+    var observer: ModuleObserver? = null
+
     val viewType: Int
         get() = item?.let { type } ?: -1
+
+
 }

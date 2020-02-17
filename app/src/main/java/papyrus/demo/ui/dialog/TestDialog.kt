@@ -1,4 +1,4 @@
-package papyrus.demo.ui
+package papyrus.demo.ui.dialog
 
 import android.os.Bundle
 import android.widget.TextView

@@ -1,3 +1,3 @@
 package papyrus.adapter
 
-abstract class SimpleModule(val target: Int) : Module
+abstract class SimpleModule(val target: Int) : Module()

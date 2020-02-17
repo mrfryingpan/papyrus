@@ -60,6 +60,6 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
     }
 
     fun refresh() {
-        modules?.forEach { it.refresh() }
+        modules?.forEach { it.invalidate() }
     }
 }

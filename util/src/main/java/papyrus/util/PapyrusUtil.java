@@ -56,23 +56,6 @@ public class PapyrusUtil {
         }
     }
 
-    public static <T> T findParentWithID(@NonNull View view, int id) {
-        if (view.getId() == id) {
-            return (T) view;
-        } else {
-            ViewParent parent = view.getParent();
-            if (parent != null && parent instanceof View) {
-                return findParentWithID((View) parent, id);
-            } else {
-                return null;
-            }
-        }
-    }
-
-    public static <T> T findViewByID(@NonNull View view, int id) {
-        return (T) view.findViewById(id);
-    }
-
     public static boolean is_translucent(Activity activity) {
         TypedValue value = new TypedValue();
         activity.getTheme().resolveAttribute(android.R.attr.windowIsTranslucent, value, true);

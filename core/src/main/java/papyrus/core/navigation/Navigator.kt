@@ -16,14 +16,14 @@ import kotlin.reflect.KClass
 typealias IResultCallback = (resultCode: Int, data: Intent?) -> Unit
 
 class Navigator {
-    internal var isActivity: Boolean = false
-    internal var context: Context
-    internal var flags: MutableSet<Int> = HashSet()
-    internal var extras = Bundle()
-    internal var customizer: Customizer? = WeakDelegate.dummy(Customizer::class.java)
-    internal var action: String? = null
-    internal var data: Uri? = null
-    internal var resultCallback: IResultCallback? = null
+    private var isActivity: Boolean = false
+    private var context: Context
+    private var flags: MutableSet<Int> = HashSet()
+    private var extras = Bundle()
+    private var customizer: Customizer? = WeakDelegate.dummy(Customizer::class.java)
+    private var action: String? = null
+    private var data: Uri? = null
+    private var resultCallback: IResultCallback? = null
 
     constructor(activity: Activity) {
         context = activity

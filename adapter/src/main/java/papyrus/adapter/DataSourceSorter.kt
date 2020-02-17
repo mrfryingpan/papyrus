@@ -2,16 +2,16 @@ package papyrus.adapter
 
 import androidx.recyclerview.widget.SortedList
 
-class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callback<DataItem>() {
-    override fun areItemsTheSame(a: DataItem?, b: DataItem?): Boolean {
+class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callback<DataItem<*>>() {
+    override fun areItemsTheSame(a: DataItem<*>?, b: DataItem<*>?): Boolean {
         return a?.target == b?.target
     }
 
-    override fun areContentsTheSame(a: DataItem?, b: DataItem?): Boolean {
+    override fun areContentsTheSame(a: DataItem<*>?, b: DataItem<*>?): Boolean {
         return a?.viewType == b?.viewType && a?.item == b?.item
     }
 
-    override fun compare(a: DataItem, b: DataItem): Int {
+    override fun compare(a: DataItem<*>, b: DataItem<*>): Int {
         return a.target.compareTo(b.target)
     }
 

@@ -7,6 +7,7 @@ const val ACTION_GENERIC = 0
 
 class DialogCallbacks {
     val callbacks = SparseArray<(() -> Unit)>()
+    var fallback: ((Int) -> Unit)? = null
     val buttonIDs: IntArray
         get() = IntArray(callbacks.size()) { callbacks.keyAt(it) }
 
@@ -20,7 +21,11 @@ class DialogCallbacks {
         }
     }
 
+    fun addFallback(action: (Int) -> Unit) {
+        fallback = action
+    }
+
     fun onResult(id: Int) {
-        callbacks[id]?.invoke()
+        callbacks[id]?.invoke() ?: fallback?.invoke(id)
     }
 }
