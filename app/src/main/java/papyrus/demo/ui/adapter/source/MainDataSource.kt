@@ -15,13 +15,13 @@ import papyrus.demo.R
 import papyrus.demo.module.AlphaModule
 import papyrus.demo.module.ButtonModule
 import papyrus.demo.module.PickerModule
-import papyrus.demo.ui.dialog.TestDialog
 import papyrus.demo.ui.activity.QueryActivity
 import papyrus.demo.ui.adapter.DataTypes
 import papyrus.demo.ui.adapter.holder.ButtonViewHolder
 import papyrus.demo.ui.adapter.holder.LabelViewHolder
 import papyrus.demo.ui.adapter.holder.PickerViewHolder
 import papyrus.demo.ui.adapter.item.LabelItem
+import papyrus.demo.ui.dialog.TestDialog
 import papyrus.util.PapyrusExecutor
 
 class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
@@ -59,6 +59,7 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
         PickerModule(9, owner)
 ) {
     var next = 0
+    override val singlePage: Boolean = true
 
     override fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem<*>> {
         return when (DataTypes.values().getOrNull(viewType)) {

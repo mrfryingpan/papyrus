@@ -14,6 +14,8 @@ abstract class DataSource<T : DataItem<*>>(vararg modules: Module) : ModuleObser
     var loading: Boolean = false
     var adapter: DataSourceAdapter? by WeakDelegate()
 
+    open val singlePage: Boolean = false
+
     fun count() = data.size()
 
     fun getItem(position: Int): DataItem<*> {
@@ -68,7 +70,7 @@ abstract class DataSource<T : DataItem<*>>(vararg modules: Module) : ModuleObser
                 if (page.isNullOrEmpty()) {
                     dataEnded = true
                 } else {
-                    page.fold(data.size(), ::addItem)
+                    page.fold(if (singlePage) 0 else data.size(), ::addItem)
                 }
                 data.endBatchedUpdates()
                 callback?.invoke()
