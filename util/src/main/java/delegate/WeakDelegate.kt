@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import java.lang.ref.WeakReference
 import kotlin.reflect.KProperty
 
-class WeakDelegate<T> {
-    var backingField: WeakReference<T> = WeakReference<T>(null)
+class WeakDelegate<T>(initialReferent: T? = null) {
+    var backingField: WeakReference<T> = WeakReference<T>(initialReferent)
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
         return backingField.get()
