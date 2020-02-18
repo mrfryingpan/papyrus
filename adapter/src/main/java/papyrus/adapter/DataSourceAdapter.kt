@@ -1,7 +1,7 @@
 package papyrus.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 
 class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>)
@@ -29,6 +29,10 @@ class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>)
 
     override fun onBindViewHolder(holder: PapyrusViewHolder<out DataItem<*>>, position: Int) {
         holder.doBind(dataSource.getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: PapyrusViewHolder<out DataItem<*>>, position: Int, payloads: MutableList<Any>) {
+        holder.doBind(dataSource.getItem(position), payloads)
     }
 }
 

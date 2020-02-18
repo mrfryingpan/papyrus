@@ -16,6 +16,15 @@ abstract class PapyrusViewHolder<T : DataItem<*>>(parent: ViewGroup, layoutID: I
             bind(it)
         }
     }
+    @Suppress("UNCHECKED_CAST")
+    internal fun doBind(_dataItem: DataItem<*>, payloads: List<Any>) {
+        (_dataItem as? T)?.let {
+            data = it
+            bind(it, payloads)
+        }
+    }
 
     abstract fun bind(dataItem: T)
+    open fun bind(dataItem: T, payloads: List<Any>) = bind(dataItem)
+
 }

@@ -32,6 +32,12 @@ class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callb
     }
 
     override fun onChanged(position: Int, count: Int, payload: Any?) {
-        adapter()?.notifyItemRangeChanged(position, count, payload)
+        payload?.let {
+            adapter()?.notifyItemRangeChanged(position, count, it)
+        } ?: onChanged(position, count)
+    }
+
+    override fun getChangePayload(item1: DataItem<*>?, item2: DataItem<*>?): Any? {
+        return item1?.getChangePayload(item2)
     }
 }

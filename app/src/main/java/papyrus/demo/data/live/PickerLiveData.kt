@@ -9,7 +9,6 @@ class PickerLiveData : MutableLiveData<PickerModel>() {
 
     fun invalidate() {
         val old = value
-        value = null
         PapyrusExecutor.ui(500L) {
             value = PickerModel(old?.selected, old?.hint, arrayOf(
                     "Test 1",
