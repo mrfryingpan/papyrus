@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
@@ -28,11 +27,11 @@ typealias IPermissionCallback = (granted: List<String>?, denied: List<String>?) 
 object Papyrus {
     lateinit var app: Application
     lateinit var connectivityManager: ConnectivityManager
-    private var currentActivity: AppCompatActivity? = null
-    private var activityInLimbo: WeakReference<AppCompatActivity?> = WeakReference(null)
+    private var currentActivity: Activity? = null
+    private var activityInLimbo: WeakReference<Activity?> = WeakReference(null)
     private val permissionRequesters = SparseArray<PermissionRequest>()
 
-    private val activeActivity: AppCompatActivity?
+    private val activeActivity: Activity?
         get() = activityInLimbo.get() ?: currentActivity
 
     val isNetworkConnected: Boolean
@@ -113,7 +112,7 @@ object Papyrus {
 
 
     fun addFragmentToActiveBackstack(fragment: Fragment, containerID: Int, name: String?, vararg animations: Int) =
-            activeActivity?.let {
+            (activeActivity as? AppCompatActivity)?.let {
                 addFragmentToBackstack(it, fragment, containerID, name, *animations)
             }
 
@@ -144,14 +143,14 @@ object Papyrus {
     fun popBackstackTo(activity: AppCompatActivity, name: String): Boolean =
             activity.supportFragmentManager.popBackStackImmediate(name, 0)
 
-    fun popBackstackTo(name: String): Boolean = activeActivity?.let {
+    fun popBackstackTo(name: String): Boolean = (activeActivity as? AppCompatActivity)?.let {
         popBackstackTo(it, name)
     } == true
 
     fun popBackstackIncluding(activity: AppCompatActivity, name: String): Boolean =
             activity.supportFragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-    fun popBackstackIncluding(name: String): Boolean = activeActivity?.let {
+    fun popBackstackIncluding(name: String): Boolean = (activeActivity as? AppCompatActivity)?.let {
         popBackstackIncluding(it, name)
     } == true
 
@@ -160,31 +159,23 @@ object Papyrus {
         while (hasBackstack(activity) && popBackstack(activity));
     }
 
-    fun clearBackstack() = activeActivity?.let {
+    fun clearBackstack() = (activeActivity as? AppCompatActivity)?.let {
         clearBackstack(it)
     }
 
 
     private class PapyrusLifecycleListener : Application.ActivityLifecycleCallbacks {
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            if (AppCompatActivity::class.java.isAssignableFrom(activity.javaClass)) {
-                activityInLimbo = WeakReference(activity as AppCompatActivity)
-            } else {
-                Log.w("Papyrus", String.format("%s does not inherit from AppCompatActivity.\nPapyrus may not function as expected.", activity.javaClass.canonicalName))
-            }
+            activityInLimbo = WeakReference(activity)
         }
 
 
         override fun onActivityStarted(activity: Activity) {
-            if (AppCompatActivity::class.java.isAssignableFrom(activity.javaClass)) {
-                if (!PapyrusUtil.is_translucent(activity)) {
-                    currentActivity = activity as AppCompatActivity
-                }
-                if (activityInLimbo.get() == currentActivity) {
-                    activityInLimbo = WeakReference(null)
-                }
-            } else {
-                Log.w("Papyrus", String.format("%s does not inherit from AppCompatActivity.\nPapyrus may not function as expected.", activity.javaClass.canonicalName))
+            if (!PapyrusUtil.is_translucent(activity)) {
+                currentActivity = activity
+            }
+            if (activityInLimbo.get() == currentActivity) {
+                activityInLimbo = WeakReference(null)
             }
         }
 
@@ -197,7 +188,7 @@ object Papyrus {
         }
 
         override fun onActivityStopped(activity: Activity) {
-            if (currentActivity === activity && !PapyrusUtil.is_translucent(activity)) {
+            if (currentActivity == activity && !PapyrusUtil.is_translucent(activity)) {
                 currentActivity = null
             }
         }
