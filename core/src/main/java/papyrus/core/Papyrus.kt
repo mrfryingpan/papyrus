@@ -36,7 +36,7 @@ object Papyrus {
 
     val isNetworkConnected: Boolean
         @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-        get() = connectivityManager.activeNetworkInfo.isConnected
+        get() = connectivityManager.activeNetworkInfo?.isConnected == true
 
     fun init(app: Application, vararg initializers: IAppInitializer) {
         this.app = app
