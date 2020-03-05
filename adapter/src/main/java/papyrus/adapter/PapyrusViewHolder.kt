@@ -9,6 +9,7 @@ abstract class PapyrusViewHolder<T : DataItem<*>>(parent: ViewGroup, layoutID: I
 
     internal lateinit var data: T
 
+
     @Suppress("UNCHECKED_CAST")
     internal fun doBind(_dataItem: DataItem<*>) {
         (_dataItem as? T)?.let {

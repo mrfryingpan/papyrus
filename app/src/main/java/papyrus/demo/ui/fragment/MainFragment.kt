@@ -13,7 +13,6 @@ class MainFragment : PapyrusFragment() {
 
 
     private val dataSource = MainDataSource(this).also {
-        it.enablePagination(3)
         it.loadNext()
     }
 

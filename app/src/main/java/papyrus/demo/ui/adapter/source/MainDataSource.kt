@@ -14,10 +14,12 @@ import papyrus.core.Papyrus
 import papyrus.demo.R
 import papyrus.demo.module.AlphaModule
 import papyrus.demo.module.ButtonModule
+import papyrus.demo.module.HeaderModule
 import papyrus.demo.module.PickerModule
 import papyrus.demo.ui.activity.QueryActivity
 import papyrus.demo.ui.adapter.DataTypes
 import papyrus.demo.ui.adapter.holder.ButtonViewHolder
+import papyrus.demo.ui.adapter.holder.HeaderViewHolder
 import papyrus.demo.ui.adapter.holder.LabelViewHolder
 import papyrus.demo.ui.adapter.holder.PickerViewHolder
 import papyrus.demo.ui.adapter.item.LabelItem
@@ -25,6 +27,7 @@ import papyrus.demo.ui.dialog.TestDialog
 import papyrus.util.PapyrusExecutor
 
 class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
+        HeaderModule(),
         ButtonModule(3, "Test Result") {
             Papyrus.navigate()
                     .onResult { resultCode, _ ->
@@ -63,6 +66,7 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
 
     override fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem<*>> {
         return when (DataTypes.values().getOrNull(viewType)) {
+            DataTypes.HEADER -> HeaderViewHolder(parent)
             DataTypes.BUTTON -> ButtonViewHolder(parent)
             DataTypes.PICKER -> PickerViewHolder(parent)
             DataTypes.LABEL -> LabelViewHolder(parent)
@@ -77,7 +81,9 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
     override fun makeNextRequest(onNewPage: (ArrayList<out Any>) -> Unit) {
         PapyrusExecutor.background(1000) {
             val page = IntRange(0, 12).fold(ArrayList<Int>()) { acc, _ ->
-                acc.add(next++)
+                if(next++ > 12) {
+                    acc.add(next++)
+                }
                 acc
             }
             PapyrusExecutor.ui {

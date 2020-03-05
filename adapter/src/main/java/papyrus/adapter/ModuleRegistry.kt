@@ -4,6 +4,7 @@ import android.util.SparseArray
 import papyrus.util.PapyrusExecutor
 
 class ModuleRegistry(private val modules: ArrayList<Module>?) {
+    private val eagerPlacements = ArrayList<SimpleModule>()
     private val placements = SparseArray<ArrayList<Module>>()
     private val draftTriggers = SparseArray<(Int) -> Int>()
 
@@ -20,9 +21,11 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
     }
 
     private fun registerPlacement(target: Int, module: Module) {
-        placements.put(target, (placements[target] ?: ArrayList()).apply {
+        (module as? EagerModule)?.let(eagerPlacements::add)
+        placements.put(target, (placements.get(target) ?: ArrayList()).apply {
             add(module)
         })
+
     }
 
     private fun draftPlacements(frequency: Int, module: Module) = fun(start: Int): Int {
@@ -46,6 +49,8 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
         return placements[index]
     }
 
+    val eagerModules: List<SimpleModule> = eagerPlacements
+
     fun modulesForIndex(index: Int): List<Module>? {
         return modulesAtIndex(index)?.apply {
             var lookForward = 1
@@ -56,7 +61,6 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
                 lookForward += 1
             }
         }
-
     }
 
     fun refresh() {

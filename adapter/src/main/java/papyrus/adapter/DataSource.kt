@@ -45,8 +45,7 @@ abstract class DataSource<T : DataItem<*>>(vararg modules: Module) : ModuleObser
 
     private fun addItem(index: Int, thing: Any): Int = moduleRegistry.modulesForIndex(index)
             ?.fold(ArrayList<DataItem<*>>()) { items, module ->
-                module.createDataItem(index + items.size, this)
-                        ?.let(items::add)
+                module.createDataItem(index + items.size, this)?.let(items::add)
                 items
             }?.takeIf {
                 it.isNotEmpty()
@@ -67,11 +66,11 @@ abstract class DataSource<T : DataItem<*>>(vararg modules: Module) : ModuleObser
             loading = false
             PapyrusExecutor.ui {
                 data.beginBatchedUpdates()
-                if (page.isNullOrEmpty()) {
-                    dataEnded = true
-                } else {
-                    page.fold(if (singlePage) 0 else data.size(), ::addItem)
-                }
+                moduleRegistry.eagerModules
+                        .mapNotNull { it.createDataItem(it.target, this) }
+                        .forEach { data.add(it) }
+                val insertPoint = data.size().takeIf { !singlePage } ?: 0
+                page.takeIf { it.isNotEmpty() }?.fold(insertPoint, ::addItem)
                 data.endBatchedUpdates()
                 callback?.invoke()
             }
@@ -79,7 +78,9 @@ abstract class DataSource<T : DataItem<*>>(vararg modules: Module) : ModuleObser
     }
 
     override fun onChanged(item: DataItem<*>) {
-        data.updateItemAt(item.target, item)
+        if (data.size() > item.target) {
+            data.updateItemAt(item.target, item)
+        }
     }
 
     abstract fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem<*>>
