@@ -8,7 +8,7 @@ class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callb
     }
 
     override fun areContentsTheSame(a: DataItem<*>?, b: DataItem<*>?): Boolean {
-        return a?.viewType == b?.viewType && a?.item == b?.item
+        return a?.viewType == b?.viewType && a?.item?.equals(b?.item) == true
     }
 
     override fun compare(a: DataItem<*>, b: DataItem<*>): Int {
