@@ -3,12 +3,9 @@ package papyrus.pager
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.viewpager.widget.PagerAdapter
-
-import java.util.LinkedList
-
 import papyrus.util.PapyrusUtil
+import java.util.*
 
 abstract class ViewPagerAdapter<VH : ViewPagerAdapter.ViewHolder> : PagerAdapter() {
 
