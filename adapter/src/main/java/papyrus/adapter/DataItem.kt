@@ -2,7 +2,7 @@ package papyrus.adapter
 
 import androidx.annotation.UiThread
 
-abstract class DataItem<T>(val target: Int, item: T?, val type: Int, val priority: Int = -1) {
+abstract class DataItem<T>(val target: Int, item: T?, val type: Int) {
     var item: T? = item
         @UiThread
         set(value) {

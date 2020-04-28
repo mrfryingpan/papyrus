@@ -4,13 +4,20 @@ import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import papyrus.util.PapyrusUtil
 import java.util.*
 
 abstract class ViewPagerAdapter<VH : ViewPagerAdapter.ViewHolder> : PagerAdapter() {
 
     private val viewPool = SparseArray<LinkedList<VH>>()
 
-    private fun retrieveViewHolderOfTypeFromPool(viewType: Int): VH? = viewPool.get(viewType)?.removeFirst()
+    private fun retrieveViewHolderOfTypeFromPool(viewType: Int): VH? {
+        return if (PapyrusUtil.isEmpty(viewPool.get(viewType))) {
+            null
+        } else {
+            viewPool.get(viewType).removeFirst()
+        }
+    }
 
     private fun stashViewHolderForReuse(holder: VH) {
         if (viewPool.get(holder.viewType) == null) {
@@ -42,7 +49,7 @@ abstract class ViewPagerAdapter<VH : ViewPagerAdapter.ViewHolder> : PagerAdapter
 
     @Suppress("UNCHECKED_CAST")
     override fun isViewFromObject(view: View, item: Any): Boolean {
-        return (item as? VH)?.itemView == view
+        return (item as? VH)?.itemView === view
     }
 
     abstract fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH
