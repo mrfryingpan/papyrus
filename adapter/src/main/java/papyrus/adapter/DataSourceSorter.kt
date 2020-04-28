@@ -12,7 +12,7 @@ class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callb
     }
 
     override fun compare(a: DataItem<*>, b: DataItem<*>): Int {
-        return a.target.compareTo(b.target)
+        return a.target.compareTo(b.target).takeIf { it != 0 } ?: a.priority.compareTo(b.priority)
     }
 
     override fun onMoved(fromPosition: Int, toPosition: Int) {
