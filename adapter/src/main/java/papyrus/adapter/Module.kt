@@ -10,5 +10,4 @@ abstract class Module {
             it.observer = observer
         }
     }
-
 }
