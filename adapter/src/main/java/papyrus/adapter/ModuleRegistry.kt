@@ -28,13 +28,15 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
 
     }
 
-    private fun draftPlacements(frequency: Int, module: Module) = fun(start: Int): Int {
+    private fun draftPlacements(frequency: Int, module: RepeatingModule) = fun(start: Int): Int {
         var target = start
         var trigger = target
         repeat(9) {
-            registerPlacement(target, module)
-            trigger = target
-            target += frequency
+            if(module.placementCount++ < module.max){
+                registerPlacement(target, module)
+                trigger = target
+                target += frequency
+            }
         }
         return trigger
     }

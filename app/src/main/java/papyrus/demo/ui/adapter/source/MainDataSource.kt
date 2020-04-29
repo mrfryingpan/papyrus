@@ -58,11 +58,14 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
                     }
                     .show()
         },
-        AlphaModule(2, 5),
+        AlphaModule(2, 1),
         PickerModule(9, owner)
 ) {
     var next = 0
-    override val singlePage: Boolean = true
+
+    init {
+        paginationThreshold = 3
+    }
 
     override fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem<*>> {
         return when (DataTypes.values().getOrNull(viewType)) {
