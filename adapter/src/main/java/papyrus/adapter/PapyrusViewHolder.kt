@@ -33,4 +33,6 @@ abstract class PapyrusViewHolder<T : DataItem<*>>(itemView: View)
     open fun bind(dataItem: T, payloads: List<Any>) = bind(dataItem)
 
     open fun recycle() = Unit
+    open fun onAttached() = Unit
+    open fun onDetached() = Unit
 }

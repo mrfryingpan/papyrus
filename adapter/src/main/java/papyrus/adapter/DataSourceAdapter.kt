@@ -38,5 +38,13 @@ class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>)
     override fun onViewRecycled(holder: PapyrusViewHolder<out DataItem<*>>) {
         holder.recycle()
     }
+
+    override fun onViewAttachedToWindow(holder: PapyrusViewHolder<out DataItem<*>>) {
+        holder.onAttached()
+    }
+
+    override fun onViewDetachedFromWindow(holder: PapyrusViewHolder<out DataItem<*>>) {
+        holder.onDetached()
+    }
 }
 
