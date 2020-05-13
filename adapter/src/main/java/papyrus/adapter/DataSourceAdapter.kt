@@ -34,5 +34,9 @@ class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>)
     override fun onBindViewHolder(holder: PapyrusViewHolder<out DataItem<*>>, position: Int, payloads: MutableList<Any>) {
         holder.doBind(dataSource.getItem(position), payloads)
     }
+
+    override fun onViewRecycled(holder: PapyrusViewHolder<out DataItem<*>>) {
+        holder.recycle()
+    }
 }
 
