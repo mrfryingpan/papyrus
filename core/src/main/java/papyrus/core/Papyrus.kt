@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager
 import papyrus.core.iface.IAppInitializer
 import papyrus.core.navigation.Navigator
 import papyrus.core.permissions.PermissionRequest
+import papyrus.core.ui.activity.InterceptorActivity
 import papyrus.util.PapyrusExecutor
 import papyrus.util.PapyrusUtil
 import papyrus.util.Res
@@ -99,6 +100,7 @@ object Papyrus {
                                     request.callback(granted, denied)
                                 }
                             }
+                            .start(InterceptorActivity::class)
                 }
             }
         }
