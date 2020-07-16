@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Build
@@ -80,6 +81,7 @@ object Papyrus {
                     navigate()
                             .action("requestPermissions")
                             .putStringArrayList("permissions", permissionsNeeded)
+                            .flags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             .onResult { _, _data ->
                                 _data?.let { data ->
                                     val permissions = data.getStringArrayExtra("permissions")
