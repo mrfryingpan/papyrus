@@ -24,9 +24,13 @@ class PickerViewHolder(parent: ViewGroup) : PapyrusViewHolder<PickerItem<PickerM
                         dataItem.item?.selected?.let { selected -> putString("selected", selected) }
                         dataItem.item?.options?.let { options -> putStringArray("options", options) }
                     }
-                    .callback {
+                    .callback(R.id.buttonConfirm) {
                         viewModel.data.updateValue {
-                            selected = dataItem.item?.options?.getOrNull(it)
+                            selected = it.getInt("choice", -1)
+                                    .takeIf { it > -1 }
+                                    ?.let {
+                                        dataItem.item?.options?.getOrNull(it)
+                                    }
                         }
                     }
                     .show()

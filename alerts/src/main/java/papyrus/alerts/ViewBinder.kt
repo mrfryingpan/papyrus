@@ -28,6 +28,6 @@ abstract class ViewBinder {
     open fun bind(config: Bundle?) = Unit
     open fun bind(config: Bundle?, send: (Int) -> Unit) = bind(config)
 
-
+    open fun resolveExtras(result: Bundle): Bundle = result
 }
 

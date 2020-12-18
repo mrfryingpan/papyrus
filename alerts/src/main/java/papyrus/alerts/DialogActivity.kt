@@ -66,7 +66,7 @@ class DialogActivity : AppCompatActivity() {
 
     private val send: (Int) -> Unit = {
         handleBackPress {
-            resultReceiver?.send(it, Bundle())
+            resultReceiver?.send(it, viewBinder?.resolveExtras(Bundle()))
         }
     }
 
@@ -109,12 +109,12 @@ class DialogBuilder(val bundle: Bundle) {
         return this
     }
 
-    fun callback(id: Int, type: Int = ACTION_GENERIC, action: () -> Unit): DialogBuilder {
+    fun callback(id: Int, type: Int = ACTION_GENERIC, action: (result: Bundle) -> Unit): DialogBuilder {
         dialogCallbacks.addCallback(id, type, action)
         return this
     }
 
-    fun callback( action:(Int)->Unit): DialogBuilder {
+    fun callback(action: (buttonID: Int, result: Bundle) -> Unit): DialogBuilder {
         dialogCallbacks.addFallback(action)
         return this
     }
@@ -129,7 +129,7 @@ class DialogBuilder(val bundle: Bundle) {
         bundle.putIntArray("clickTargets", dialogCallbacks.buttonIDs)
         bundle.putParcelable("resultReceiver", object : ResultReceiver(PapyrusExecutor.uiHandler) {
             override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-                dialogCallbacks.onResult(resultCode)
+                dialogCallbacks.onResult(resultCode, resultData)
             }
         })
         Papyrus.navigate()

@@ -18,8 +18,9 @@ class PickerDialog : ViewBinder() {
     val title: TextView by lazy { itemView.findViewById<TextView>(R.id.title) }
     val recycler: RecyclerView by lazy { itemView.findViewById<RecyclerView>(R.id.recycler) }
 
-    override val layoutID: Int
-        get() = R.layout.dialog_picker
+    override val layoutID: Int = R.layout.dialog_picker
+
+    var choice: Int? = null
 
     override fun bind(config: Bundle?, send: (Int) -> Unit) {
         config?.getString("title")?.let { title.text = it }
@@ -32,7 +33,7 @@ class PickerDialog : ViewBinder() {
 
                 override fun createDefaultDataItem(index: Int, data: Any): DataItem<*> {
                     return LabelItem(index, data as String) {
-                        send(index)
+                        choice = index
                     }
                 }
 
@@ -47,4 +48,7 @@ class PickerDialog : ViewBinder() {
         }
     }
 
+    override fun resolveExtras(result: Bundle) = result.apply {
+        choice?.let { putInt("choice", it) }
+    }
 }
