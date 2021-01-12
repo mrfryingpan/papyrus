@@ -1,11 +1,13 @@
 package papyrus.adapter
 
 import android.graphics.Canvas
+import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import delegate.WeakDelegate
+import papyrus.util.Res
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -18,6 +20,12 @@ class StickyHeaderDecoration<T : StickyDataItem<out Any>, K : StickyViewHolder<T
 
     val dataSource: DataSource<out DataItem<*>>? by WeakDelegate(dataSource)
     val headers = SparseArray<T>()
+
+    var headerVisible: Boolean = false
+        set(value) {
+            field = value
+            headerViewHolder.itemView.visibility = if (value) View.VISIBLE else View.GONE
+        }
 
     init {
         syncState()
@@ -45,35 +53,40 @@ class StickyHeaderDecoration<T : StickyDataItem<out Any>, K : StickyViewHolder<T
                 }
                 headers.get(index)
             }?.let {
-                headerViewHolder.itemView.visibility = View.VISIBLE
+                headerVisible = true
                 headerViewHolder.bind(it)
             } ?: run {
+                headerVisible = false
                 headerViewHolder.itemView.visibility = View.GONE
             }
         }
 
-        holderAt(1, parent)?.also { secondHolder ->
-            when {
-                secondHolder::class == headerViewHolder::class -> {
-                    val secondItemView = secondHolder.itemView
-                    headerViewHolder.apply {
-                        itemView.translationY =
-                                (secondItemView.y - headerViewHolder.itemView.height)
-                                        .coerceAtMost(0f)
-                                        .also {
-                                            shadow?.alpha = 1 - abs(it) / itemView.height
-                                            (secondHolder as? K)
-                                                    ?.shadow?.alpha = (abs(it) / itemView.height)
-                                        }
-                    }
-                    headerViewHolder.itemView.invalidate()
-                }
-                else -> {
-                    headerViewHolder.itemView.translationY = 0f
-                    headerViewHolder.shadow?.alpha = 1f
-                    (firstHolder as? K)?.shadow?.alpha = 0f
+        var index = 1
+        var nextHeader: RecyclerView.ViewHolder?
+        do {
+            nextHeader = holderAt(index++, parent)
+        } while (nextHeader != null && nextHeader::class != headerViewHolder::class)
+
+        Log.wtf("Sticky", "$nextHeader")
+        (nextHeader as? K)?.let { nextHeaderViewHolder ->
+            nextHeaderViewHolder.itemView.let { nextHeaderItemView ->
+                headerViewHolder.apply {
+                    itemView.translationY = (
+                            nextHeaderItemView.y
+                                    - headerViewHolder.itemView.height
+                                    + Res.dp(5f)
+                            )
+                            .coerceAtMost(0f)
+                            .also {
+                                shadow?.alpha = 1 - abs(it) / itemView.height
+                                nextHeaderViewHolder.shadow?.alpha = (abs(it) / itemView.height)
+                            }
                 }
             }
+        } ?: run {
+            headerViewHolder.itemView.translationY = 0f
+            headerViewHolder.shadow?.alpha = 1f
+            (firstHolder as? K)?.shadow?.alpha = 0f
         }
     }
 
