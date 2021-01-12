@@ -1,13 +1,13 @@
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
-    ext.kotlin_version = '1.3.72'
+    ext.kotlin_version = '1.4.10'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.9.0"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
@@ -25,7 +25,7 @@ allprojects {
 
 ext {
     groupID = 'com.papyrus'
-    versionName = "1.2.27"
+    versionName = "1.2.28"
     versionCode = 11
 
     minSdkVersion = 16
@@ -34,15 +34,15 @@ ext {
     buildToolsVersion = "28.0.3"
 
     //LibraryVersions
-    AppCompat = "1.1.0"
+    AppCompat = "1.2.0"
     AppCompatAnnotations = "1.1.0"
     AppCompatRecycler = "1.1.0"
-    SwipeRefresh = "1.0.0"
-    Material = "1.0.0"
+    SwipeRefresh = "1.1.0"
+    Material = "1.2.1"
     Support = "28+"
     JUnit = "4.12"
-    TestRunner = "1.1.0"
-    Espresso = "3.2.0"
+    TestRunner = "1.3.0"
+    Espresso = "3.3.0"
 }
 
 task clean(type: Delete) {

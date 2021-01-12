@@ -18,10 +18,7 @@ import papyrus.demo.module.HeaderModule
 import papyrus.demo.module.PickerModule
 import papyrus.demo.ui.activity.QueryActivity
 import papyrus.demo.ui.adapter.DataTypes
-import papyrus.demo.ui.adapter.holder.ButtonViewHolder
-import papyrus.demo.ui.adapter.holder.HeaderViewHolder
-import papyrus.demo.ui.adapter.holder.LabelViewHolder
-import papyrus.demo.ui.adapter.holder.PickerViewHolder
+import papyrus.demo.ui.adapter.holder.*
 import papyrus.demo.ui.adapter.item.LabelItem
 import papyrus.demo.ui.dialog.TestDialog
 import papyrus.util.PapyrusExecutor
@@ -58,7 +55,7 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
                     }
                     .show()
         },
-        AlphaModule(2, 1),
+        AlphaModule(2, 5),
         PickerModule(9, owner)
 ) {
     var next = 0
@@ -72,6 +69,7 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
             DataTypes.HEADER -> HeaderViewHolder(parent)
             DataTypes.BUTTON -> ButtonViewHolder(parent)
             DataTypes.PICKER -> PickerViewHolder(parent)
+            DataTypes.ALPHA -> AlphaViewHolder(parent)
             DataTypes.LABEL -> LabelViewHolder(parent)
             else -> EmptyViewHolder(parent)
         }

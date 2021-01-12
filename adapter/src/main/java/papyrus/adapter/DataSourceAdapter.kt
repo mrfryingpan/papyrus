@@ -4,11 +4,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>)
+class DataSourceAdapter(private val dataSource: DataSource<out DataItem<*>>, stickyHeaderDecoration: StickyHeaderDecoration<*, *>? = null)
     : RecyclerView.Adapter<PapyrusViewHolder<out DataItem<*>>>() {
 
     init {
         dataSource.adapter = this
+        stickyHeaderDecoration?.let { registerAdapterDataObserver(it.adapterDataObserver) }
     }
 
     override fun getItemViewType(position: Int): Int {

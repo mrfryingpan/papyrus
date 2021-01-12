@@ -4,5 +4,6 @@ enum class DataTypes {
     HEADER,
     BUTTON,
     LABEL,
-    PICKER
+    PICKER,
+    ALPHA
 }

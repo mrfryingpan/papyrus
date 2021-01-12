@@ -1,9 +1,7 @@
 package papyrus.demo.module
 
-import papyrus.adapter.DataItem
-import papyrus.adapter.ModuleObserver
 import papyrus.adapter.RepeatingModule
-import papyrus.demo.ui.adapter.item.LabelItem
+import papyrus.demo.ui.adapter.item.AlphaItem
 import java.util.*
 
 class AlphaModule(start: Int, frequency: Int) : RepeatingModule(start, frequency, 5) {
@@ -12,10 +10,10 @@ class AlphaModule(start: Int, frequency: Int) : RepeatingModule(start, frequency
     }
 
     override fun invalidate() {
-
+        super.invalidate()
     }
 
-    override fun createDataItem(index: Int): LabelItem? {
-        return stuff.poll()?.let { LabelItem(index, it.toString()) }
+    override fun createDataItem(index: Int): AlphaItem? {
+        return stuff.poll()?.let { AlphaItem(index, it.toString()) }
     }
 }
