@@ -19,6 +19,10 @@ class StickyHeaderDecoration<T : StickyDataItem<out Any>, K : StickyViewHolder<T
     val dataSource: DataSource<out DataItem<*>>? by WeakDelegate(dataSource)
     val headers = SparseArray<T>()
 
+    init {
+        syncState()
+    }
+
     private fun syncState(start: Int = 0, end: Int = (dataSource?.count() ?: 0)) {
         for (i in start..end) {
             headers.remove(i)
