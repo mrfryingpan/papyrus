@@ -1,7 +1,6 @@
 package papyrus.adapter
 
 import android.graphics.Canvas
-import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -67,7 +66,6 @@ class StickyHeaderDecoration<T : StickyDataItem<out Any>, K : StickyViewHolder<T
             nextHeader = holderAt(index++, parent)
         } while (nextHeader != null && nextHeader::class != headerViewHolder::class)
 
-        Log.wtf("Sticky", "$nextHeader")
         (nextHeader as? K)?.let { nextHeaderViewHolder ->
             nextHeaderViewHolder.itemView.let { nextHeaderItemView ->
                 headerViewHolder.apply {

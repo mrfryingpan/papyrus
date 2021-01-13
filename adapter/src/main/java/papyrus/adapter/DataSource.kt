@@ -34,7 +34,7 @@ abstract class DataSource<T : DataItem<*>>(vararg modules: Module) : ModuleObser
     }
 
     @CallSuper
-    fun refresh(callback: () -> Unit) {
+    open fun refresh(callback: () -> Unit) {
         data.clear()
         moduleRegistry.refresh()
         paginationThreshold?.let {
