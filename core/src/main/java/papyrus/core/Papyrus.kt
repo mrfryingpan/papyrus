@@ -33,7 +33,7 @@ object Papyrus {
     private var activityInLimbo: WeakReference<Activity?> = WeakReference(null)
     private val permissionRequesters = SparseArray<PermissionRequest>()
 
-    private val activeActivity: Activity?
+    val activeActivity: Activity?
         get() = activityInLimbo.get() ?: currentActivity
 
     val isNetworkConnected: Boolean
