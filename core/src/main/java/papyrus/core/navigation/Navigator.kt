@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.content.ServiceConnection
 import android.net.Uri
 import android.os.*
@@ -194,6 +195,20 @@ class Navigator {
             startActivity(intent)
         } else if (Service::class.java.isAssignableFrom(destination)) {
             startService(intent)
+        }
+    }
+
+    fun startIntentSender(sender: IntentSender) {
+        resultCallback?.also { callback ->
+            val receiver = object : ResultReceiver(Handler(Looper.getMainLooper())) {
+                override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+                    callback.invoke(resultCode, resultData.getParcelable<Parcelable>("result") as? Intent)
+                }
+            }
+            Navigator(if (isActivity) context as Activity else context)
+                    .putParcelable("intentSender", sender)
+                    .putParcelable("callback", receiver)
+                    .start(InterceptorActivity::class.java)
         }
     }
 

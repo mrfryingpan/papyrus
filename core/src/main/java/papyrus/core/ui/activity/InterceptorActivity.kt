@@ -2,6 +2,7 @@ package papyrus.core.ui.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
 import android.os.ResultReceiver
@@ -9,14 +10,14 @@ import android.os.ResultReceiver
 
 class InterceptorActivity : Activity() {
 
-    private var callback: ResultReceiver? = null
+    val wrappedIntent: Intent? by lazy { intent.getParcelableExtra<Intent>("intent") }
+    val wrappedSender: IntentSender? by lazy { intent.getParcelableExtra<IntentSender>("intentSender") }
+    val callback: ResultReceiver? by lazy { intent.getParcelableExtra<ResultReceiver>("callback") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(0, 0)
-        callback = intent.getParcelableExtra("callback")
-
-        intent.getParcelableExtra<Intent>("intent")?.let { chainIntent ->
+        wrappedIntent?.let { chainIntent ->
             if ("requestPermissions" == chainIntent.action) {
                 if (Build.VERSION.SDK_INT >= 23) {
                     chainIntent.getStringArrayListExtra("permissions")?.let { permissionsToRequest ->
@@ -30,6 +31,9 @@ class InterceptorActivity : Activity() {
             }
         }
 
+        wrappedSender?.let { sender ->
+            startIntentSenderForResult(sender, 2, null, 0, 0, 0)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
