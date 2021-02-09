@@ -39,6 +39,7 @@ dependencies {
     testImplementation "junit:junit:${rootProject.ext.JUnit}"
     androidTestImplementation "androidx.test:runner:${rootProject.ext.TestRunner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.Espresso}"
+    api project(":core")
     api project(":util")
 }
 

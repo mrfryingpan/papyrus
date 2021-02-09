@@ -2,29 +2,29 @@ package papyrus.spanner
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.ParcelableSpan
 import android.text.Spannable
 import android.text.SpannableString
-import kotlinx.android.parcel.Parcelize
+import papyrus.core.navigation.readArbitrary
+import papyrus.core.navigation.writeArbitrary
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 class Spanner() : Parcelable {
     private var stringBuilder = StringBuilder()
     private var spanRegistry = ArrayList<SpanDeclaration>()
     private var spanStack = Stack<SpanDeclaration>()
 
-    @Suppress("UNCHECKED_CAST")
     constructor(parcel: Parcel) : this() {
         stringBuilder = parcel.readSerializable() as StringBuilder
-        spanRegistry = ArrayList(parcel.readArrayList(SpanDeclaration::class.java.classLoader) as ArrayList<SpanDeclaration>)
+        spanRegistry = parcel.readArbitrary()
     }
 
-    fun beginSpan(obj: ParcelableSpan): Spanner {
+    fun beginSpan(obj: Any): Spanner {
         spanStack.push(SpanDeclaration(obj, stringBuilder.length, stringBuilder.length))
         return this
     }
 
-    fun appendSpan(text: String, vararg spans: ParcelableSpan): Spanner {
+    fun appendSpan(text: String, vararg spans: Any): Spanner {
         spans.forEach { obj ->
             spanRegistry.add(SpanDeclaration(obj, stringBuilder.length, stringBuilder.length + text.length))
         }
@@ -41,20 +41,17 @@ class Spanner() : Parcelable {
         return this
     }
 
-    fun build(): Spannable {
-        return SpannableString(stringBuilder.toString()).apply {
-            spanRegistry.forEach { span ->
-                setSpan(span.what, span.start, span.end, SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
+    fun build(): Spannable = SpannableString(stringBuilder.toString()).apply {
+        spanRegistry.forEach { span ->
+            span.what?.let { obj ->
+                setSpan(obj, span.start, span.end, SpannableString.SPAN_INCLUSIVE_EXCLUSIVE)
             }
         }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        if (spanStack.isNotEmpty()) {
-            throw IllegalStateException("Cannot parcel a spanner with an open span")
-        }
         parcel.writeSerializable(stringBuilder)
-        parcel.writeTypedList(spanRegistry)
+        parcel.writeArbitrary(spanRegistry)
     }
 
     override fun describeContents(): Int = 0
@@ -70,9 +67,4 @@ class Spanner() : Parcelable {
     }
 }
 
-@Parcelize
-data class SpanDeclaration(
-        var what: ParcelableSpan,
-        var start: Int,
-        var end: Int
-) : Parcelable
+data class SpanDeclaration(var what: Any?, var start: Int, var end: Int)

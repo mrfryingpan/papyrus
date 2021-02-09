@@ -1,6 +1,8 @@
 package papyrus.demo.ui.adapter.source
 
 import android.Manifest
+import android.graphics.Color
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.Toast
@@ -21,6 +23,8 @@ import papyrus.demo.ui.adapter.DataTypes
 import papyrus.demo.ui.adapter.holder.*
 import papyrus.demo.ui.adapter.item.LabelItem
 import papyrus.demo.ui.dialog.TestDialog
+import papyrus.spanner.OnClickSpan
+import papyrus.spanner.Spanner
 import papyrus.util.PapyrusExecutor
 
 class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
@@ -42,7 +46,16 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
             DialogBuilder()
                     .configuration {
                         putString("title", "Test Dialog")
-                        putString("message", "This is a test Dialog, and this is the message")
+                        putParcelable("message",
+                                Spanner()
+                                        .appendSpan("Say Hello")
+                                        .appendSpan("\n")
+                                        .appendSpan("Red", ForegroundColorSpan(Color.RED))
+                                        .appendSpan("\n")
+                                        .appendSpan("click me", OnClickSpan {
+                                            Toast.makeText(Papyrus.app, "Clicked", Toast.LENGTH_SHORT).show()
+                                        })
+                        )
                         putString("positive", "Ok")
                         putString("negative", "Nah")
                     }
@@ -82,7 +95,7 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
     override fun makeNextRequest(onNewPage: (ArrayList<out Any>) -> Unit) {
         PapyrusExecutor.background(1000) {
             val page = IntRange(0, 12).fold(ArrayList<Int>()) { acc, _ ->
-                if(next++ > 12) {
+                if (next++ > 12) {
                     acc.add(next++)
                 }
                 acc

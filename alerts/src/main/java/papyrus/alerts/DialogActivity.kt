@@ -12,6 +12,7 @@ import papyrus.util.TouchBlocker
 import java.lang.ref.WeakReference
 import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 class DialogActivity : AppCompatActivity() {
     private val dialogRootLayout: ViewGroup by lazy { findViewById<ViewGroup>(R.id.dialog_root) }
     private val dialogContentLayout: ViewGroup by lazy { findViewById<ViewGroup>(R.id.dialog_content) }
@@ -21,7 +22,6 @@ class DialogActivity : AppCompatActivity() {
 
     private fun parseExtras(extras: Bundle) {
         resultReceiver = extras.getParcelable("resultReceiver")
-        @Suppress("UNCHECKED_CAST")
         viewBinder = (extras.getSerializable("viewBinder") as Class<ViewBinder>).newInstance()
         extras.getParcelable<ResultReceiver>("handle")?.let { instanceReceiver ->
             instanceReceiver.send(0, Bundle().apply {
