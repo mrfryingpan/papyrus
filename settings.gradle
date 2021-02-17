@@ -1,1 +1,2 @@
+include ':dsl'
 include ':core', ':util', ':app', ':toolbar', ':ui', ':picker', ':fonts', ':base', ':toolbar-tabs', ':pager', ':alerts', ':adapter', ':sleuth', ':sleuth_ga', ':spanner'

@@ -1,6 +1,5 @@
 package papyrus.core
 
-import android.Manifest
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -10,12 +9,12 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.util.SparseArray
-import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import papyrus.core.iface.IAppInitializer
 import papyrus.core.navigation.Navigator
+import papyrus.core.network.PapyrusNetwork
 import papyrus.core.permissions.PermissionRequest
 import papyrus.core.ui.activity.InterceptorActivity
 import papyrus.util.PapyrusExecutor
@@ -28,7 +27,6 @@ typealias IPermissionCallback = (granted: List<String>?, denied: List<String>?) 
 @Suppress("UNUSED", "MemberVisibilityCanBePrivate")
 object Papyrus {
     lateinit var app: Application
-    lateinit var connectivityManager: ConnectivityManager
     private var currentActivity: Activity? = null
     private var activityInLimbo: WeakReference<Activity?> = WeakReference(null)
     private val permissionRequesters = SparseArray<PermissionRequest>()
@@ -36,15 +34,15 @@ object Papyrus {
     val activeActivity: Activity?
         get() = activityInLimbo.get() ?: currentActivity
 
+    @Deprecated("Use PapyrusNetwork.isConnected Instead", replaceWith = ReplaceWith("PapyrusNetwork.isConnected", "papyrus.core.network.PapyrusNetwork"))
     val isNetworkConnected: Boolean
-        @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-        get() = connectivityManager.activeNetworkInfo?.isConnected == true
+        get() = PapyrusNetwork.isConnected
 
     fun init(app: Application, vararg initializers: IAppInitializer) {
         this.app = app
-        connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         Res.init(app)
 
+        PapyrusNetwork.onAppCreated(app)
         initializers.forEach {
             it.onAppCreated(app)
         }
