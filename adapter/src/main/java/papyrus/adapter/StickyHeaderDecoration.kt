@@ -37,7 +37,7 @@ class StickyHeaderDecoration<T : StickyDataItem<out Any>, K : StickyViewHolder<T
                     ?.takeIf { it.size() > i }
                     ?.let { it[i] as? T }
                     ?.let {
-                        headers.put(it.target, it)
+                        headers.put(i, it)
                     }
 
         }
