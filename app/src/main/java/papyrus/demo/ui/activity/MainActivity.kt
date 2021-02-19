@@ -10,15 +10,8 @@ class MainActivity : PapyrusToolbarActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent(MainFragment())
-        PapyrusNetwork.monitor {
-            onNetworkConnected {
-                Toast.makeText(this@MainActivity, "Connected", Toast.LENGTH_SHORT).show()
-            }
-
-            onNetworkDisconnected {
-                Toast.makeText(this@MainActivity, "Disconnected", Toast.LENGTH_SHORT).show()
-
-            }
+        PapyrusNetwork.onReconnect {
+            Toast.makeText(this, "Reconnected", Toast.LENGTH_SHORT).show()
         }
     }
 }

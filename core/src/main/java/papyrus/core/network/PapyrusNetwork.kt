@@ -8,10 +8,14 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import papyrus.core.iface.IAppInitializer
 import papyrus.dsl.EmptyAction
-import java.util.*
-import kotlin.collections.HashSet
+import papyrus.util.PapyrusExecutor
+import java.util.concurrent.LinkedBlockingDeque
 
 @SuppressLint("MissingPermission")
 object PapyrusNetwork : IAppInitializer {
@@ -25,7 +29,7 @@ object PapyrusNetwork : IAppInitializer {
             else -> connectedNetworks.isNotEmpty()
         }
 
-    val monitors = LinkedList<NetworkMonitor>()
+    val monitors = LinkedBlockingDeque<NetworkMonitor>()
 
     override fun onAppCreated(app: Application) {
         connectivityManager = app.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
@@ -41,6 +45,35 @@ object PapyrusNetwork : IAppInitializer {
 
     fun monitor(monitorConfigure: NetworkMonitor.() -> Unit) {
         monitors.add(NetworkMonitor().apply(monitorConfigure))
+    }
+
+    fun monitor(owner: LifecycleOwner, monitorConfigure: NetworkMonitor.() -> Unit) {
+        NetworkMonitor().apply(monitorConfigure).also { monitor ->
+            owner.lifecycle.addObserver(object : LifecycleObserver {
+                @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+                fun onLifecycleResume() {
+                    monitors.offer(monitor)
+                }
+
+                @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+                fun onLifecyclePause() {
+                    monitors.remove(monitor)
+                }
+            })
+        }
+    }
+
+    fun onReconnect(callback: () -> Unit) {
+        NetworkMonitor().apply {
+            onNetworkConnected {
+                callback()
+                PapyrusExecutor.background {
+                    monitors.remove(this)
+                }
+            }
+        }.also {
+            monitors.offer(it)
+        }
     }
 
     @SuppressLint("NewApi")
