@@ -1,6 +1,5 @@
 package papyrus.demo.module
 
-import papyrus.adapter.EagerModule
 import papyrus.adapter.SimpleModule
 import papyrus.demo.ui.adapter.item.ButtonItem
 

@@ -14,6 +14,8 @@ abstract class DataItem<T>(val target: Int, item: T?, val type: Int) {
     val viewType: Int
         get() = item?.let { type } ?: -1
 
+    open val id: Int = target
+
     @Suppress("UNCHECKED_CAST")
     fun getChangePayload(newItem: DataItem<*>?): Any? {
         if (type == newItem?.type) {

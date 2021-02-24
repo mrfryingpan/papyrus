@@ -1,8 +1,10 @@
-package papyrus.adapter
+package papyrus.adapter.sorted
 
 import androidx.recyclerview.widget.SortedList
+import papyrus.adapter.DataItem
+import papyrus.adapter.DataSourceAdapter
 
-class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callback<DataItem<*>>() {
+class DataSourceSorter(val adapter: DataSourceAdapter) : SortedList.Callback<DataItem<*>>() {
     override fun areItemsTheSame(a: DataItem<*>?, b: DataItem<*>?): Boolean {
         return a?.target == b?.target
     }
@@ -16,24 +18,24 @@ class DataSourceSorter(val adapter: () -> DataSourceAdapter?) : SortedList.Callb
     }
 
     override fun onMoved(fromPosition: Int, toPosition: Int) {
-        adapter()?.notifyItemMoved(fromPosition, toPosition)
+        adapter.notifyItemMoved(fromPosition, toPosition)
     }
 
     override fun onChanged(position: Int, count: Int) {
-        adapter()?.notifyItemRangeChanged(position, count)
+        adapter.notifyItemRangeChanged(position, count)
     }
 
     override fun onInserted(position: Int, count: Int) {
-        adapter()?.notifyItemRangeInserted(position, count)
+        adapter.notifyItemRangeInserted(position, count)
     }
 
     override fun onRemoved(position: Int, count: Int) {
-        adapter()?.notifyItemRangeRemoved(position, count)
+        adapter.notifyItemRangeRemoved(position, count)
     }
 
     override fun onChanged(position: Int, count: Int, payload: Any?) {
         payload?.let {
-            adapter()?.notifyItemRangeChanged(position, count, it)
+            adapter.notifyItemRangeChanged(position, count, it)
         } ?: onChanged(position, count)
     }
 

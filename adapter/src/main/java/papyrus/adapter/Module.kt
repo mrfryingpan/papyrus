@@ -1,5 +1,7 @@
 package papyrus.adapter
 
+import papyrus.adapter.ModuleObserver
+
 abstract class Module {
     abstract fun invalidate()
 

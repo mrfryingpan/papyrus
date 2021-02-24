@@ -1,10 +1,8 @@
 package papyrus.demo.ui.adapter.holder
 
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import papyrus.adapter.PapyrusViewHolder
 import papyrus.adapter.StickyViewHolder
 import papyrus.demo.R
 import papyrus.demo.ui.adapter.item.AlphaItem

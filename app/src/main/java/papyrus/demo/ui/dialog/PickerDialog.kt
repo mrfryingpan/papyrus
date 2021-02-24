@@ -6,9 +6,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import papyrus.adapter.DataItem
-import papyrus.adapter.DataSource
 import papyrus.adapter.DataSourceAdapter
 import papyrus.adapter.PapyrusViewHolder
+import papyrus.adapter.differ.DifferDataSource
 import papyrus.alerts.ViewBinder
 import papyrus.demo.R
 import papyrus.demo.ui.adapter.holder.LabelViewHolder
@@ -26,7 +26,7 @@ class PickerDialog : ViewBinder() {
         config?.getString("title")?.let { title.text = it }
         config?.getStringArray("options")?.let { options ->
             recycler.layoutManager = LinearLayoutManager(itemView.context)
-            recycler.adapter = DataSourceAdapter(object : DataSource<DataItem<String>>() {
+            recycler.adapter = DataSourceAdapter(object : DifferDataSource() {
                 override fun createViewHolder(parent: ViewGroup, viewType: Int): PapyrusViewHolder<out DataItem<*>> {
                     return LabelViewHolder(parent)
                 }
@@ -37,13 +37,10 @@ class PickerDialog : ViewBinder() {
                     }
                 }
 
-                override fun makeNextRequest(onNewPage: (ArrayList<out Any>) -> Unit) {
-                    onNewPage(arrayListOf<String>(*options))
+                override fun makeNextRequest() {
+                    update(arrayListOf<String>(*options))
                     dataEnded = true
                 }
-
-            }.apply {
-                loadNext()
             })
         }
     }

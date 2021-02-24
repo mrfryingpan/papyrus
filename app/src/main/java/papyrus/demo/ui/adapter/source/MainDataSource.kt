@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import papyrus.adapter.DataItem
-import papyrus.adapter.DataSource
 import papyrus.adapter.EmptyViewHolder
 import papyrus.adapter.PapyrusViewHolder
+import papyrus.adapter.differ.DifferDataSource
 import papyrus.alerts.DialogBuilder
 import papyrus.core.Papyrus
 import papyrus.demo.R
@@ -27,7 +27,7 @@ import papyrus.spanner.OnClickSpan
 import papyrus.spanner.Spanner
 import papyrus.util.PapyrusExecutor
 
-class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
+class MainDataSource(owner: LifecycleOwner) : DifferDataSource(
         HeaderModule(),
         ButtonModule(3, "Test Result") {
             Papyrus.navigate()
@@ -92,17 +92,14 @@ class MainDataSource(owner: LifecycleOwner) : DataSource<DataItem<out Any>>(
         return LabelItem(index, data.toString())
     }
 
-    override fun makeNextRequest(onNewPage: (ArrayList<out Any>) -> Unit) {
+    override fun makeNextRequest() {
         PapyrusExecutor.background(1000) {
-            val page = IntRange(0, 12).fold(ArrayList<Int>()) { acc, _ ->
-                if (next++ > 12) {
-                    acc.add(next++)
+            val page = IntRange(0, 120).fold(ArrayList<Int>()) { acc, _ ->
+                acc.apply {
+                    add(next++)
                 }
-                acc
             }
-            PapyrusExecutor.ui {
-                onNewPage(page)
-            }
+            update(page)
         }
 
     }

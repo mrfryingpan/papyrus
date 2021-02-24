@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import papyrus.adapter.PapyrusViewHolder
 import papyrus.demo.R
-import papyrus.demo.ui.adapter.item.ButtonItem
 import papyrus.demo.ui.adapter.item.HeaderItem
 
 class HeaderViewHolder(parent: ViewGroup): PapyrusViewHolder<HeaderItem>(parent, R.layout.item_header) {
