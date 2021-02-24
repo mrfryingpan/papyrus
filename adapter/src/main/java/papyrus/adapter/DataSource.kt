@@ -8,7 +8,7 @@ abstract class DataSource {
     var loading = false
 
     init {
-        PapyrusExecutor.background {
+        PapyrusExecutor.background(10) {
             load()
         }
     }
