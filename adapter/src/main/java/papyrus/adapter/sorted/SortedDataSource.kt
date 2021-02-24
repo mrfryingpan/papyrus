@@ -55,7 +55,6 @@ abstract class SortedDataSource(vararg modules: Module) : DataSource(), ModuleOb
             }
 
     override fun update(newData: ArrayList<out Any>) {
-        loading = false
         PapyrusExecutor.ui {
             data.beginBatchedUpdates()
             moduleRegistry.eagerModules
@@ -64,6 +63,7 @@ abstract class SortedDataSource(vararg modules: Module) : DataSource(), ModuleOb
             val insertPoint = data.size().takeIf { !singlePage } ?: 0
             newData.takeIf { it.isNotEmpty() }?.fold(insertPoint, ::addItem)
             data.endBatchedUpdates()
+            loading = false
         }
     }
 

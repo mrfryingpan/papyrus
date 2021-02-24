@@ -38,7 +38,6 @@ abstract class DifferDataSource(vararg modules: Module) : DataSource(), ModuleOb
     }
 
     override fun update(newData: ArrayList<out Any>) {
-        loading = false
         PapyrusExecutor.ui {
             data.set(newData.foldIndexed(ArrayList()) { index, acc, item ->
                 acc.apply {
@@ -52,6 +51,7 @@ abstract class DifferDataSource(vararg modules: Module) : DataSource(), ModuleOb
                     add(createDefaultDataItem(index, item))
                 }
             })
+            loading = false
         }
     }
 
