@@ -41,8 +41,6 @@ dependencies {
     api project(':alerts')
     api project(':picker')
     api project(':spanner')
-    api project(':sleuth')
-    api project(':sleuth_ga')
     api project(':ui')
     api project(':toolbar')
     api project(':toolbar-tabs')
