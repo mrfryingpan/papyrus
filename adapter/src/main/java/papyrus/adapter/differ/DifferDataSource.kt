@@ -49,6 +49,13 @@ abstract class DifferDataSource(vararg modules: Module) : DataSource(), ModuleOb
                                 add(it)
                             }
                     add(createDefaultDataItem(index, item))
+                    moduleRegistry.eagerModules.filter { it.target >= size }
+                            .mapNotNull { module ->
+                                module.createDataItem(acc.size, this@DifferDataSource)
+                            }
+                            .forEach {
+                                add(it)
+                            }
                 }
             })
             loading = false
