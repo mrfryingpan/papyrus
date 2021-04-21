@@ -169,11 +169,11 @@ class Navigator {
         return this
     }
 
-    private fun prepareIntent(destination: Class<*>): Intent {
+    fun prepareIntent(destination: Class<*>): Intent {
         return this.prepareIntent(Intent(context, destination))
     }
 
-    private fun prepareIntent(intent: Intent): Intent {
+    fun prepareIntent(intent: Intent): Intent {
         intent.flags = flags.fold(0) { intentFlags, flag ->
             intentFlags or flag
         }
