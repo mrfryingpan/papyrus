@@ -29,23 +29,23 @@ allprojects {
 
 }
 configure(subprojects.findAll {!it.name.contains('app')}) {
-    artifactoryPublish.dependsOn('build')
-    System.out.println(project.getName())
     publishing {
         publications {
             aar(MavenPublication) {
-                groupId = "com.papyrus"
+                groupId = rootProject.group
                 artifactId = "${project.getName()}"
-                version = "1.5.0"
+                version = "1.5.2"
                 // Tell maven to prepare the generated "*.aar" file for publishing
                 artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
 
                 pom.withXml {
                 def dependencies = asNode().appendNode('dependencies')
                 configurations.implementation.allDependencies.each {
+                    System.out.println(it.group)
+
                     if (it.group == 'Papyrus 2') {
                         def dependency = dependencies.appendNode('dependency')
-                        dependency.appendNode('groupId', "${project.PUBLISH_GROUP_ID}.papyrus")
+                        dependency.appendNode('groupId', rootProject.group)
                         dependency.appendNode('artifactId', "${it.name}")
                         dependency.appendNode('version', version)
                     } else {
