@@ -1,5 +1,36 @@
-//apply plugin: 'com.jfrog.artifactory'
-//apply plugin: 'maven-publish'
+apply plugin: 'maven-publish'
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+
+                group = project.PUBLISH_GROUP_ID
+                artifactId = project.PUBLISH_ARTIFACT_ID
+                version = rootProject.ext.versionName
+
+                pom.withXml {
+                    def dependencies = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each {
+                        System.out.println("${it.group}, ${it.name}")
+                        if (it.group == 'com.github.mrfryingpan.papyrus') {
+                            def dependency = dependencies.appendNode('dependency')
+                            dependency.appendNode('groupId', project.PUBLISH_GROUP_ID)
+                            dependency.appendNode('artifactId', "papyrus-${it.name}")
+                            dependency.appendNode('version', rootProject.ext.versionName)
+                        } else {
+                            def dependency = dependencies.appendNode('dependency')
+                            dependency.appendNode('groupId', it.group)
+                            dependency.appendNode('artifactId', it.name)
+                            dependency.appendNode('version', it.version)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 //
 //task sourcesJar(type: Jar) {
 //    from android.sourceSets.main.java.srcDirs
@@ -34,22 +65,7 @@
 //
 //            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
 //
-//            pom.withXml {
-//                def dependencies = asNode().appendNode('dependencies')
-//                configurations.implementation.allDependencies.each {
-//                    if (it.group == 'Papyrus 2') {
-//                        def dependency = dependencies.appendNode('dependency')
-//                        dependency.appendNode('groupId', project.PUBLISH_GROUP_ID)
-//                        dependency.appendNode('artifactId', "papyrus-${it.name}")
-//                        dependency.appendNode('version', rootProject.ext.versionName)
-//                    } else {
-//                        def dependency = dependencies.appendNode('dependency')
-//                        dependency.appendNode('groupId', it.group)
-//                        dependency.appendNode('artifactId', it.name)
-//                        dependency.appendNode('version', it.version)
-//                    }
-//                }
-//            }
+//
 //        }
 //    }
 //}

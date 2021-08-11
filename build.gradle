@@ -29,45 +29,12 @@ allprojects {
 
 }
 configure(subprojects.findAll {!it.name.contains('app')}) {
-    publishing {
-        publications {
-            aar(MavenPublication) {
-                groupId = rootProject.group
-                artifactId = "${project.getName()}"
-                version = "1.5.2"
-                // Tell maven to prepare the generated "*.aar" file for publishing
-                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
-
-                pom.withXml {
-                def dependencies = asNode().appendNode('dependencies')
-                configurations.implementation.allDependencies.each {
-                    System.out.println(it.group)
-
-                    if (it.group == 'Papyrus 2') {
-                        def dependency = dependencies.appendNode('dependency')
-                        dependency.appendNode('groupId', rootProject.group)
-                        dependency.appendNode('artifactId', "${it.name}")
-                        dependency.appendNode('version', version)
-                    } else {
-                        def dependency = dependencies.appendNode('dependency')
-                        dependency.appendNode('groupId', it.group)
-                        dependency.appendNode('artifactId', it.name)
-                        dependency.appendNode('version', it.version)
-                    }
-                }
-            }
-            }
-        }
-    }
-
-    artifactoryPublish {
-        publications(publishing.publications.aar)
-    }
+    apply from:'../deploy.gradle'
 }
 
 ext {
-    groupID = 'com.papyrus'
-    versionName = "1.5.1"
+    groupID = 'com.github.mrfryingpan.papyrus'
+    versionName = "1.5.3"
     versionCode = 11
 
     minSdkVersion = 16
@@ -89,25 +56,5 @@ ext {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-artifactoryPublish.skip = true
-project("app"){
-    artifactoryPublish.skip = true
-}
-artifactory {
-    contextUrl = "https://papyrus.jfrog.io/artifactory/"
-    publish {
-        repository {
-            repoKey = "papyrus"
-            username = System.getenv("JFROG_USER")
-            password = System.getenv("JFROG_PASS")
-            maven = true
-        }
-        defaults {
-            publishArtifacts = true
-            publishPom = true
-        }
-    }
 }
 
