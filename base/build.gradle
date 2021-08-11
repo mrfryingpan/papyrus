@@ -40,4 +40,3 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.Espresso}"
 }
 
-apply from: rootProject.file('deploy.gradle')

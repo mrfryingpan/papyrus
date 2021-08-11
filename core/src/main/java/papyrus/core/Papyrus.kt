@@ -1,5 +1,6 @@
 package papyrus.core
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -10,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.SparseArray
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import papyrus.core.iface.IAppInitializer
@@ -24,7 +26,7 @@ import java.lang.ref.WeakReference
 
 typealias IPermissionCallback = (granted: List<String>?, denied: List<String>?) -> Unit
 
-@Suppress("UNUSED", "MemberVisibilityCanBePrivate")
+@Suppress("StaticFieldLeak", "UNUSED", "MemberVisibilityCanBePrivate")
 object Papyrus {
     lateinit var app: Application
     private var currentActivity: Activity? = null
@@ -112,12 +114,10 @@ object Papyrus {
     fun addFragmentToActiveBackstack(fragment: Fragment, containerID: Int) =
             addFragmentToActiveBackstack(fragment, containerID, null)
 
-
     fun addFragmentToActiveBackstack(fragment: Fragment, containerID: Int, name: String?, vararg animations: Int) =
             (activeActivity as? AppCompatActivity)?.let {
                 addFragmentToBackstack(it, fragment, containerID, name, *animations)
             }
-
 
     fun addFragmentToBackstack(activity: AppCompatActivity, fragment: Fragment, containerID: Int, name: String?, vararg animations: Int) {
         if ("root".equals(name, ignoreCase = true))

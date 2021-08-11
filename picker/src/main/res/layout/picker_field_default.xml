@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <TextView
@@ -14,5 +15,5 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@android:drawable/arrow_down_float"
-        android:tint="@android:color/black" />
+        app:tint="@android:color/black" />
 </LinearLayout>

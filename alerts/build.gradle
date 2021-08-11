@@ -44,5 +44,3 @@ dependencies {
     api project(':util')
     api project(':core')
 }
-
-apply from: rootProject.file('deploy.gradle')

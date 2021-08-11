@@ -33,8 +33,6 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-
-
     compileOnly "androidx.appcompat:appcompat:${rootProject.ext.AppCompat}"
     compileOnly "androidx.recyclerview:recyclerview:${rootProject.ext.AppCompatRecycler}"
 
@@ -43,6 +41,3 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.Espresso}"
     implementation project(path: ':util')
 }
-
-
-apply from: rootProject.file('deploy.gradle')

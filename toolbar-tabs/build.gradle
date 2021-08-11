@@ -46,6 +46,3 @@ dependencies {
     api project(':pager')
     api project(':util')
 }
-
-
-apply from: rootProject.file('deploy.gradle')

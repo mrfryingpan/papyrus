@@ -43,4 +43,3 @@ dependencies {
     annotationProcessor "androidx.annotation:annotation:${rootProject.ext.AppCompatAnnotations}"
 }
 
-apply from: rootProject.file('deploy.gradle')
