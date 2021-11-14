@@ -74,6 +74,8 @@ class StickyHeaderDecoration(frame: ViewGroup) : ItemDecoration() {
                                 shadow?.alpha = 1 - abs(it) / itemView.height
                                 nextHeaderViewHolder.shadow?.alpha = (abs(it) / itemView.height)
                             }
+                }?: run {
+                    nextHeaderViewHolder.shadow?.alpha = 0f
                 }
             }
         } ?: run {
