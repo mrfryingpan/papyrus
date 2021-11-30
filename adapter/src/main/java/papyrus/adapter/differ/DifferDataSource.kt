@@ -41,14 +41,14 @@ abstract class DifferDataSource(vararg modules: Module) : DataSource(), ModuleOb
         PapyrusExecutor.ui {
             data.set(newData.foldIndexed(ArrayList<DataItem<*>>()) { index, acc, item ->
                 acc.apply {
-                    moduleRegistry.modulesForIndex(index)
+                    val modules = moduleRegistry.modulesForIndex(index)
                             ?.mapNotNull { module ->
                                 module.createDataItem(size, this@DifferDataSource)
                             }
-                            ?.forEach {
+                            ?.onEach {
                                 add(it)
-                            }
-                    add(createDefaultDataItem(index, item))
+                            }.orEmpty()
+                    add(createDefaultDataItem(index+ modules.size, item))
                 }
             }.apply {
                 moduleRegistry.eagerModules.filter { it.target >= size }
