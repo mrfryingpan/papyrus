@@ -56,7 +56,7 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
     fun modulesForIndex(index: Int): List<Module>? {
         return modulesAtIndex(index)?.apply {
             var lookForward = 1
-            while (lookForward < size) {
+            while (lookForward <= size) {
                 modulesAtIndex(index + lookForward)?.forEach { newModule ->
                     add(newModule)
                 }
