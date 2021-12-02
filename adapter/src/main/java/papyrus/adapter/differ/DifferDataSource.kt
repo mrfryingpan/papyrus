@@ -41,23 +41,23 @@ abstract class DifferDataSource(vararg modules: Module) : DataSource(), ModuleOb
         PapyrusExecutor.ui {
             data.set(newData.foldIndexed(ArrayList<DataItem<*>>()) { index, acc, item ->
                 acc.apply {
-                    val modules = moduleRegistry.modulesForIndex(index)
-                            ?.mapNotNull { module ->
-                                module.createDataItem(size, this@DifferDataSource)
-                            }
-                            ?.onEach {
-                                add(it)
-                            }.orEmpty()
-                    add(createDefaultDataItem(index+ modules.size, item))
+                    moduleRegistry.modulesForIndex(acc.size)
+                        ?.mapNotNull { module ->
+                            module.createDataItem(size, this@DifferDataSource)
+                        }
+                        ?.onEach {
+                            add(it)
+                        }
+                    add(createDefaultDataItem(acc.size, item))
                 }
             }.apply {
                 moduleRegistry.eagerModules.filter { it.target >= size }
-                        .mapNotNull { module ->
-                            module.createDataItem(size, this@DifferDataSource)
-                        }
-                        .forEach {
-                            add(it)
-                        }
+                    .mapNotNull { module ->
+                        module.createDataItem(size, this@DifferDataSource)
+                    }
+                    .forEach {
+                        add(it)
+                    }
             })
             loading = false
         }
