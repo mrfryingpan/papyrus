@@ -1,10 +1,16 @@
 apply plugin: 'maven-publish'
 
+
 afterEvaluate {
+    task androidSourcesJar(type: Jar) {
+        archiveClassifier.set('sources')
+        from android.sourceSets.main.java.srcDirs
+    }
     publishing {
         publications {
             release(MavenPublication) {
                 artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+                artifact tasks.androidSourcesJar
 
                 group = project.PUBLISH_GROUP_ID
                 artifactId = project.PUBLISH_ARTIFACT_ID
@@ -28,15 +34,11 @@ afterEvaluate {
                     }
                 }
             }
+
         }
     }
 }
-//
-//task sourcesJar(type: Jar) {
-//    from android.sourceSets.main.java.srcDirs
-//    classifier = 'sources'
-//}
-//
+
 //task javadoc(type: Javadoc) {
 //    source = android.sourceSets.main.java.srcDirs
 //    classpath += configurations.compile

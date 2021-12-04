@@ -40,26 +40,32 @@ abstract class SortedDataSource(vararg modules: Module) : DataSource(), ModuleOb
     }
 
     private fun addItem(index: Int, thing: Any): Int = moduleRegistry.modulesForIndex(index)
-            ?.fold(ArrayList<DataItem<*>>()) { items, module ->
-                module.createDataItem(index + items.size, this)?.let(items::add)
-                items
-            }?.takeIf {
-                it.isNotEmpty()
-            }?.let { items ->
-                items.forEach { data.add(it) }
-                addItem(index + items.size, thing)
-            }
-            ?: run {
-                data.add(createDefaultDataItem(index, thing))
-                index + 1
-            }
+        .fold(ArrayList<DataItem<*>>()) { items, module ->
+            module.createDataItem(index + items.size, this)?.let(items::add)
+            items
+        }.takeIf {
+            it.isNotEmpty()
+        }?.let { items ->
+            items.forEach { data.add(it) }
+            addItem(index + items.size, thing)
+        }
+        ?: run {
+            data.add(createDefaultDataItem(index, thing))
+            index + 1
+        }
 
     override fun update(newData: ArrayList<out Any>) {
+        submit(newData, false)
+    }
+
+    fun submit(newData: ArrayList<out Any>, clear: Boolean) {
         PapyrusExecutor.ui {
             data.beginBatchedUpdates()
+            if (clear) data.clear()
+
             moduleRegistry.eagerModules
-                    .mapNotNull { it.createDataItem(it.target, this) }
-                    .forEach { data.add(it) }
+                .mapNotNull { it.createDataItem(it.target, this) }
+                .forEach { data.add(it) }
             val insertPoint = data.size().takeIf { !singlePage } ?: 0
             newData.takeIf { it.isNotEmpty() }?.fold(insertPoint, ::addItem)
             data.endBatchedUpdates()

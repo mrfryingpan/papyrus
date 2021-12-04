@@ -34,7 +34,7 @@ configure(subprojects.findAll {!it.name.contains('app')}) {
 
 ext {
     groupID = 'com.github.mrfryingpan.papyrus'
-    versionName = "1.5.8"
+    versionName = "1.6.0"
     versionCode = 11
 
     minSdkVersion = 16

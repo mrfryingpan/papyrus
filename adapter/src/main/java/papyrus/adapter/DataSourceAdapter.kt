@@ -43,4 +43,6 @@ class DataSourceAdapter(dataSource: DataSource) : RecyclerView.Adapter<PapyrusVi
     override fun onViewDetachedFromWindow(holder: PapyrusViewHolder<out DataItem<*>>) {
         holder.onDetached()
     }
+
+
 }

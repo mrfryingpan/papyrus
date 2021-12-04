@@ -1,5 +1,6 @@
 package papyrus.adapter
 
+import android.util.Log
 import android.util.SparseArray
 import papyrus.util.PapyrusExecutor
 
@@ -32,7 +33,7 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
         var target = start
         var trigger = target
         repeat(9) {
-            if(module.placementCount++ < module.max){
+            if (module.placementCount++ < module.max) {
                 registerPlacement(target, module)
                 trigger = target
                 target += frequency
@@ -41,28 +42,27 @@ class ModuleRegistry(private val modules: ArrayList<Module>?) {
         return trigger
     }
 
-    private fun modulesAtIndex(index: Int): ArrayList<Module>? {
+    private fun modulesAtIndex(index: Int): List<Module> {
         PapyrusExecutor.background {
             draftTriggers[index]?.let {
                 draftTriggers.remove(index)
                 draftTriggers.put(it(index), it)
             }
         }
-        return placements[index]
+        return placements[index].orEmpty()
     }
 
     val eagerModules: List<SimpleModule> = eagerPlacements
 
-    fun modulesForIndex(index: Int): List<Module>? {
-        return modulesAtIndex(index)?.apply {
-            var lookForward = 1
-            while (lookForward <= size) {
-                modulesAtIndex(index + lookForward)?.forEach { newModule ->
-                    add(newModule)
+    fun modulesForIndex(index: Int): List<Module> {
+        return ArrayList(modulesAtIndex(index))
+            .apply {
+                var lookForward = 1
+                while (lookForward <= size) {
+                    addAll(modulesAtIndex(index + lookForward))
+                    lookForward += 1
                 }
-                lookForward += 1
             }
-        }
     }
 
     fun refresh() {

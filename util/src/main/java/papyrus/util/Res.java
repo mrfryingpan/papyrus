@@ -83,7 +83,7 @@ public class Res {
 
     public static int dpi(int i) {
         throwIfNoContext();
-        return (int) dp(i);
+        return (int) Math.ceil(dp(i));
     }
 
     public static boolean bool(int id) {
