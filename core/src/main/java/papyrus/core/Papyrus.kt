@@ -22,6 +22,7 @@ import papyrus.core.ui.activity.InterceptorActivity
 import papyrus.util.PapyrusExecutor
 import papyrus.util.PapyrusUtil
 import papyrus.util.Res
+import java.lang.Exception
 import java.lang.ref.WeakReference
 
 typealias IPermissionCallback = (granted: List<String>?, denied: List<String>?) -> Unit
@@ -44,7 +45,11 @@ object Papyrus {
         this.app = app
         Res.init(app)
 
-        PapyrusNetwork.onAppCreated(app)
+        try {
+            PapyrusNetwork.onAppCreated(app)
+        } catch (e: Exception) {
+            //Android doesn't Feel like allowing this today.
+        }
         initializers.forEach {
             it.onAppCreated(app)
         }
