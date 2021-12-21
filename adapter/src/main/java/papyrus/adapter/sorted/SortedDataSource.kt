@@ -67,7 +67,10 @@ abstract class SortedDataSource(vararg modules: Module) : DataSource(), ModuleOb
                 .mapNotNull { it.createDataItem(it.target, this) }
                 .forEach { data.add(it) }
             val insertPoint = data.size().takeIf { !singlePage } ?: 0
-            newData.takeIf { it.isNotEmpty() }?.fold(insertPoint, ::addItem)
+            val newSize = newData.takeIf { it.isNotEmpty() }?.fold(insertPoint, ::addItem)
+            newSize?.until(data.size())
+                ?.reversed()
+                ?.forEach(data::removeItemAt)
             data.endBatchedUpdates()
             loading = false
         }
