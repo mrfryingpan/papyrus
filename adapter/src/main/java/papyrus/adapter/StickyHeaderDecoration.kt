@@ -39,7 +39,6 @@ class StickyHeaderDecoration(frame: ViewGroup) : ItemDecoration() {
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         val firstHolder = holderAt(0, parent)
-        Log.wtf("Sticky", "holderAtPosition: ${firstHolder?.adapterPosition}")
         firstHolder?.adapterPosition
             ?.downTo(0)
             ?.firstNotNullOfOrNull { headers.get(it) }
@@ -51,7 +50,6 @@ class StickyHeaderDecoration(frame: ViewGroup) : ItemDecoration() {
                             .takeIf { it.parent == null }
                             ?.let { frame?.addView(it) }
                         headerVisible = true
-                        Log.wtf("Sticky", this.toString())
                     }
             }
             ?: PapyrusExecutor.ui {
@@ -67,7 +65,6 @@ class StickyHeaderDecoration(frame: ViewGroup) : ItemDecoration() {
         1.until(parent.childCount)
             .firstNotNullOfOrNull { holderAt(it, parent) as? StickyViewHolder<*> }
             ?.let { nextHeaderHolder ->
-                Log.wtf("Sticky", nextHeaderHolder.toString())
                 nextHeaderHolder.itemView.let { nextHeaderView ->
                     headerViewHolder?.apply {
                         itemView.translationY = nextHeaderView.y
